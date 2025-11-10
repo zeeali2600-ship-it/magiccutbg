@@ -1,23 +1,13 @@
 {
   "name": "MagicCutBG",
   "short_name": "MagicCutBG",
-  "start_url": "/index.html",
+  "start_url": "/magiccutbg/",
+  "scope": "/magiccutbg/",
   "display": "standalone",
   "background_color": "#ffffff",
-  "theme_color": "#6a5cff",
-  "description": "Remove backgrounds in 1 click.",
+  "theme_color": "#7c4dff",
   "icons": [
-    {
-      "src": "/design.png",
-      "sizes": "512x512",
-      "type": "image/png"
-    },
-    {
-      "src": "/design.png",
-      "sizes": "192x192",
-      "type": "image/png"
-    }
-  ],
-  "scope": "/",
-  "lang": "en-US"
+    { "src": "icons/icon-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any maskable" }
+  ]
 }
