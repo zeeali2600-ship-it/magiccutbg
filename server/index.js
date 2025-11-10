@@ -23,8 +23,8 @@ app.post('/api/remove', upload.single('image'), async (req, res) => {
     form.append('image', req.file.buffer, { filename: req.file.originalname });
     form.append('format', 'result');          // direct processed output
     form.append('background', 'transparent'); // transparent bg
-    form.append('test', 'true');              // test mode (remove later)
 
+    
     const auth = {
       username: process.env.CLIPPINGMAGIC_ID,
       password: process.env.CLIPPINGMAGIC_SECRET,
