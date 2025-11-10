@@ -9,14 +9,14 @@
     :root{
       --bg:#fbf8ff;
       --panel:#ffffff;
-      --accent1:#7a5bff;
-      --accent2:#6aa3ff;
+      --accent1:#6f5bff;
+      --accent2:#7fb8ff;
       --accent-yellow:#ffd36b;
       --green1:#40d39a;
       --green2:#27b36f;
       --muted:#f6f6fb;
-      --outline: rgba(120,100,180,0.08);
-      --radius-lg:20px;
+      --outline: rgba(120,100,180,0.10);
+      --radius-lg:18px;
       --radius-md:12px;
       --shadow-strong: 0 18px 40px rgba(30,20,80,0.06);
       --shadow-soft: 0 8px 20px rgba(30,20,80,0.04);
@@ -29,11 +29,10 @@
       font-family: Inter, "Segoe UI", Roboto, Arial, sans-serif;
       background: linear-gradient(180deg,var(--bg),#fff);
       color:#111;
-      -webkit-font-smoothing:antialiased;
     }
 
     /* layout */
-    .app{display:flex;gap:26px;padding:26px;height:100vh;align-items:flex-start}
+    .app{display:flex;gap:26px;padding:26px;height:100vh;align-items:flex-start;justify-content:flex-start}
     .left{width:420px}
     .card{
       background:var(--panel);
@@ -41,12 +40,13 @@
       padding:18px;
       box-shadow:var(--shadow-strong);
       border:1px solid rgba(0,0,0,0.02);
+      outline: 1px solid rgba(120,100,180,0.03); /* subtle outer border */
     }
 
-    /* Brand */
+    /* Brand (slightly smaller name per request) */
     .brand{text-align:center;margin-bottom:8px}
     .brand h1{
-      font-size:44px;
+      font-size:38px; /* a bit smaller */
       margin:6px 0 4px 0;
       line-height:1;
       font-weight:900;
@@ -67,7 +67,7 @@
       box-shadow: 0 8px 22px rgba(120,100,180,0.02);
     }
 
-    /* upload box */
+    /* upload box - add clear outer border (box bahir border lines) */
     .upload{
       position:relative;
       border-radius:12px;
@@ -78,6 +78,7 @@
       justify-content:center;
       background:#fff;
       overflow:hidden;
+      border:1px solid rgba(120,100,180,0.08); /* outer border */
     }
     .upload::after{
       content:'';
@@ -91,7 +92,7 @@
     .placeholder{color:#98a0b3;text-align:center;font-size:14px;z-index:2}
     .upload img{max-width:100%;max-height:var(--max-upload-h);border-radius:10px;object-fit:contain;z-index:2}
 
-    /* button base - slim & consistent */
+    /* button base - slim & consistent, improved professional look */
     .btn{
       display:inline-block;
       padding:10px 18px;
@@ -105,7 +106,7 @@
       font-size:15px;
       color:#fff;
       box-shadow:0 8px 22px rgba(30,20,80,0.06);
-      min-width:130px;
+      min-width:140px;
       text-align:center;
       white-space:nowrap;
     }
@@ -114,9 +115,9 @@
     .btn:hover:before{left:120%;opacity:0.45}
 
     .btn-upload{background:linear-gradient(90deg,var(--accent1),var(--accent2));padding:10px 26px;border-radius:16px;}
-    .btn-remove{background:linear-gradient(90deg,#7fa3ff,#9fd0ff);min-width:170px;border-radius:14px;}
+    .btn-remove{background:linear-gradient(90deg,#7fa3ff,#9fd0ff);min-width:180px;border-radius:14px;}
     .btn-sub{background:linear-gradient(90deg,var(--accent-yellow),#ffcf5a);color:#111;min-width:120px;border-radius:14px;box-shadow:0 10px 26px rgba(255,170,60,0.08)}
-    /* glossy 3rd button: Download — stronger sheen + small border */
+    /* glossy third button - stronger sheen + subtle border */
     .btn-download{
       background: linear-gradient(180deg,var(--green1),var(--green2));
       padding:10px 34px;
@@ -125,14 +126,14 @@
       margin:14px auto 0;
       min-width:180px;
       box-shadow: 0 12px 36px rgba(40,150,110,0.12);
-      border:2px solid rgba(0,0,0,0.06);
+      border:2px solid rgba(0,0,0,0.05);
+      position:relative;
     }
     .btn-download:after{
-      /* top glossy shine */
       content:'';
       position:absolute;
       left:0;right:0;top:0;
-      height:40%;
+      height:36%;
       background: linear-gradient(180deg, rgba(255,255,255,0.45), rgba(255,255,255,0));
       border-radius:16px 16px 0 0;
       pointer-events:none;
@@ -151,18 +152,16 @@
     .actions .left{flex:1}
     .download-row{text-align:center;margin-top:12px}
 
-    /* trials, progress and stop (placed under buttons) */
+    /* footer: removed Your Plan; trials full set under buttons as requested */
     .footer{margin-top:12px;display:flex;flex-direction:column;gap:10px}
-    .plan-row{display:flex;align-items:center;gap:12px}
-    .plan-dot{width:12px;height:12px;background:#000;border-radius:4px}
-    .trials-wrap{margin-left:auto;display:flex;align-items:center;gap:10px}
+    .trials-wrap{display:flex;align-items:center;gap:12px;justify-content:flex-start}
     .trials-oval{background:rgba(122,91,255,0.07);padding:8px 12px;border-radius:999px;font-weight:800;color:var(--accent1);font-size:13px;box-shadow:0 6px 16px rgba(122,91,255,0.04)}
-    .progress-wrap{width:160px;height:10px;background:#f4f4f8;border-radius:999px;overflow:hidden;border:1px solid rgba(0,0,0,0.03)}
+    .progress-wrap{width:200px;height:10px;background:#f4f4f8;border-radius:999px;overflow:hidden;border:1px solid rgba(0,0,0,0.03)}
     .progress-bar{height:100%;background:linear-gradient(90deg,#2ecc71,#27b36f);width:100%;transition:width .3s}
 
     .status-pill{margin-top:8px;background:#0b0b0b;color:#fff;padding:12px;border-radius:12px;font-weight:700;box-shadow:0 8px 24px rgba(0,0,0,0.08)}
 
-    /* right result area: neat framed panel with inner border and centered content */
+    /* right result area: add outer border lines and center the inner text/image */
     .result-frame{
       width:100%;
       height:calc(100vh - 56px);
@@ -170,17 +169,17 @@
       padding:18px;
       background:linear-gradient(180deg,#fff,#fbfbff);
       box-shadow:var(--shadow-soft);
-      border:1px solid rgba(120,100,180,0.06);
+      border:1px solid rgba(120,100,180,0.06); /* outer border for result box */
       display:flex;
       align-items:center;
       justify-content:center;
     }
     .result-inner{
-      width:82%;
-      height:86%;
+      width:78%;
+      height:82%;
       border-radius:14px;
       padding:20px;
-      border:1px solid rgba(120,100,180,0.06);
+      border:1px solid rgba(120,100,180,0.06); /* inner border line */
       display:flex;
       align-items:center;
       justify-content:center;
@@ -196,7 +195,7 @@
       .app{flex-direction:column;padding:18px;height:auto}
       .left{width:100%}
       .result-frame{height:420px}
-      .brand h1{font-size:40px}
+      .brand h1{font-size:36px}
     }
   </style>
 </head>
@@ -253,12 +252,10 @@
             <button id="downloadBtn" class="btn-download" disabled>Download</button>
           </div>
 
-          <!-- trials and plan under buttons -->
+          <!-- trials and progress under buttons -->
           <div class="footer">
-            <div class="plan-row">
-              <div class="plan-dot"></div>
-              <div style="font-weight:700">Your Plan: <strong>Free</strong></div>
-              <div class="trials-wrap" style="margin-left:auto">
+            <div style="display:flex;align-items:center;gap:12px">
+              <div class="trials-wrap">
                 <div class="trials-oval">Trials: <span id="trialsCount">3</span></div>
                 <div class="progress-wrap" style="margin-left:8px"><div id="trialsBar" class="progress-bar" style="width:100%"></div></div>
               </div>
