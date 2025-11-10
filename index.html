@@ -26,48 +26,73 @@
     .left{width:380px;background:var(--card);border-radius:var(--radius);padding:22px;box-shadow:var(--shadow-lg);display:flex;flex-direction:column}
     .right{flex:1;background:var(--card);border-radius:var(--radius);padding:18px;box-shadow:var(--shadow-sm);display:flex;align-items:center;justify-content:center}
     .brand{text-align:center;margin-bottom:8px;padding-top:8px}
-    .brand h1{font-size:42px;margin:4px 0 6px 0;line-height:1;color:transparent;background:linear-gradient(90deg,#ff8bd1,#9b6bff,#6aa3ff);-webkit-background-clip:text;background-clip:text;font-weight:900;text-shadow:0 8px 24px rgba(155,107,255,0.10)}
+    .brand h1{
+      font-size:42px;
+      margin:4px 0 2px 0;
+      line-height:1;
+      color:transparent;
+      background:linear-gradient(90deg,#ff8bd1,#9b6bff,#6aa3ff);
+      -webkit-background-clip:text;background-clip:text;font-weight:900;
+      text-shadow:0 8px 24px rgba(155,107,255,0.10)
+    }
     .brand p{margin:0;color:#666;font-size:14px}
 
+    /* upload box bigger */
     .upload{border-radius:12px;border:2px dashed #e9e6f6;padding:18px;min-height:300px;background:linear-gradient(180deg,#fff,#fbfbff);display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden}
     .upload.hover{border-color:var(--accent1)}
     .upload img{max-width:100%;max-height:var(--max-upload-height);border-radius:12px;object-fit:contain;display:block}
     .upload .placeholder{text-align:center;color:#9aa0b3;font-size:14px}
     .upload input{display:none}
 
-    /* Button base */
-    .btn{display:inline-block;padding:14px 22px;border-radius:18px;border:none;cursor:pointer;font-weight:800;position:relative;overflow:hidden;transition:transform .12s ease,box-shadow .12s ease;font-size:15px}
+    /* Button base - slightly narrower, larger text for good fit */
+    .btn{
+      display:inline-block;
+      padding:12px 14px;            /* reduced horizontal padding (narrower) */
+      border-radius:16px;
+      border:none;
+      cursor:pointer;
+      font-weight:800;
+      position:relative;
+      overflow:hidden;
+      transition:transform .12s ease,box-shadow .12s ease;
+      font-size:16px;               /* slightly larger inner text */
+      min-width:110px;              /* ensure consistent pill size */
+      max-width:260px;
+      text-align:center;
+      white-space:nowrap;
+    }
     .btn:active{transform:translateY(1px)}
     .btn:before{content:'';position:absolute;left:-45%;top:-60%;width:100%;height:220%;transform:rotate(25deg);opacity:0.22;background:linear-gradient(90deg,rgba(255,255,255,0.9),rgba(255,255,255,0.12));transition:all .6s ease}
     .btn:hover:before{left:120%;opacity:0.6}
 
-    /* Generate (purple) - same as sample left */
+    /* Generate (purple) */
     .btn-generate{
       background:linear-gradient(90deg,var(--accent1),var(--accent2));
       color:#fff;
       box-shadow:0 18px 40px rgba(122,91,255,0.15);
     }
 
-    /* Subscribe (yellow) - sample right */
+    /* Subscribe (yellow) */
     .btn-subscribe{
       background:linear-gradient(90deg,#ffd36b,#ffc94d);
       color:#111;
       box-shadow:0 18px 40px rgba(255,184,90,0.12);
-      border-radius:18px;
-      padding:14px 20px;
+      padding:14px 18px;
     }
 
-    /* Download (green pill centered) */
+    /* Download (green pill centered) - narrower than before, larger text*/
     .btn-download{
       background:linear-gradient(90deg,var(--green1),var(--green2));
       color:#fff;
       box-shadow:0 18px 40px rgba(50,180,140,0.12);
       border-radius:18px;
-      padding:14px 32px;
+      padding:12px 26px;
       font-weight:900;
+      font-size:17px;
+      min-width:160px;
     }
 
-    /* Stop button (soft green pill like sample) */
+    /* Stop button (soft green pill) */
     .btn-stop{
       background:linear-gradient(90deg,#b9f0d8,#82e3b8);
       color:#fff;
@@ -75,37 +100,49 @@
       border-radius:16px;
       padding:10px 16px;
       font-weight:800;
+      font-size:15px;
+      min-width:90px;
     }
 
-    .controls{display:flex;gap:12px;margin-top:14px;align-items:center}
+    .controls{display:flex;gap:12px;margin-top:12px;align-items:center}
     .field{flex:1}
     select,input{padding:10px;border-radius:10px;border:1px solid #e9e6f6;width:100%}
 
-    /* Layout for buttons and centered download */
-    .row-top{display:flex;justify-content:space-between;gap:12px;margin-top:10px}
-    .center-row{display:flex;justify-content:center;margin-top:16px}
+    /* Layout for the two main action buttons - do not force flex:1 */
+    .actions-row{display:flex;gap:12px;margin-top:14px;align-items:center;justify-content:space-between}
+    .actions-row .left-action{flex:0 0 auto}
+    .actions-row .right-action{flex:0 0 auto}
 
-    /* Trials area - oval + progress + stop button at right */
-    .trials-area{display:flex;align-items:center;gap:12px;margin-top:18px}
-    .trials-oval{background:rgba(122,91,255,0.08);padding:10px 16px;border-radius:999px;color:var(--accent1);font-weight:800;box-shadow:0 8px 18px rgba(122,91,255,0.06);min-width:86px;text-align:center}
-    .trials-progress-wrap{flex:1;height:12px;background:#f1f1f6;border-radius:999px;overflow:hidden;border:1px solid rgba(0,0,0,0.03)}
+    /* Trials area */
+    .trials-container{display:flex;align-items:center;gap:14px;margin-left:auto}
+    .trials-oval{
+      background:rgba(122,91,255,0.08);
+      border-radius:999px;
+      padding:10px 16px;
+      font-weight:800;
+      color:var(--accent1);
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      box-shadow:0 6px 18px rgba(122,91,255,0.06);
+      min-width:90px; justify-content:center;
+      font-size:14px;
+    }
+    .trials-progress-wrap{width:140px;height:12px;background:#f1f1f6;border-radius:999px;overflow:hidden;border:1px solid rgba(0,0,0,0.03)}
     .trials-progress{height:100%;background:linear-gradient(90deg,#2ecc71,#27b36f);width:100%;transition:width .3s ease}
+
+    /* right preview area: exact center for note and big result image */
+    .result-wrap{width:100%;height:calc(100vh - 84px);display:flex;align-items:center;justify-content:center;flex-direction:column;gap:12px;padding:20px}
+    .result-note{color:#9aa0b3;font-size:16px;text-align:center}
+    .result-img{max-width:85%;max-height:85%;border-radius:12px;box-shadow:0 20px 40px rgba(30,20,80,0.06);object-fit:contain;display:none}
 
     .footer{font-size:13px;color:#666;margin-top:auto;display:flex;flex-direction:column;gap:10px}
     .status-pill{background:#000;color:#fff;padding:12px;border-radius:12px;width:100%;text-align:left;box-shadow:0 8px 24px rgba(0,0,0,0.12)}
     a.privacy{color:#666;text-decoration:underline}
+    .subscribe-pulse{animation: pulse 1.6s infinite}
+    @keyframes pulse{0%{transform:scale(1)}50%{transform:scale(1.03)}100%{transform:scale(1)}}
 
-    /* Right result area centered both axes for note and big image */
-    .result-wrap{width:100%;height:calc(100vh - 84px);display:flex;align-items:center;justify-content:center;flex-direction:column;gap:12px;padding:20px}
-    .result-note{color:#9aa0b3;font-size:16px;text-align:center}
-    .result-img{max-width:80%;max-height:85%;border-radius:12px;box-shadow:0 20px 40px rgba(30,20,80,0.06);object-fit:contain;display:none}
-
-    @media (max-width:900px){
-      .app{flex-direction:column;height:auto;padding:18px}
-      .left{width:100%}
-      .right{width:100%}
-      .brand h1{font-size:36px}
-    }
+    @media (max-width:900px){ .app{flex-direction:column;height:auto;padding:18px} .left{width:100%} .right{width:100%} .brand h1{font-size:36px} }
   </style>
 </head>
 <body>
@@ -126,19 +163,9 @@
         </div>
       </label>
 
-      <!-- top row: Generate (left) and Subscribe Pro (right) -->
-      <div class="row-top">
-        <button id="generateBtn" class="btn btn-generate">Generate</button>
-        <button id="subscribeBtn" class="btn btn-subscribe">★ Subscribe Pro</button>
-      </div>
+      <button id="uploadBtn" class="btn btn-generate" style="margin-top:12px">Upload Image</button>
 
-      <!-- centered Download button like sample -->
-      <div class="center-row">
-        <button id="downloadBtn" class="btn-download" disabled>Download</button>
-      </div>
-
-      <!-- format/size controls kept below (if needed) -->
-      <div class="controls" style="margin-top:12px">
+      <div class="controls">
         <div class="field">
           <label style="font-size:12px;color:#777">Format</label>
           <select id="format">
@@ -156,14 +183,29 @@
         </div>
       </div>
 
-      <!-- trials + progress + stop (right) -->
-      <div class="trials-area">
-        <div class="trials-oval">Trials: <span id="trialsCount">3</span></div>
-        <div class="trials-progress-wrap"><div id="trialsProgress" class="trials-progress" style="width:100%"></div></div>
-        <div><button id="stopBtn" class="btn-stop">Stop</button></div>
+      <!-- actions row: narrower buttons, not forced to full width -->
+      <div class="actions-row">
+        <div class="left-action"><button id="removeBtn" class="btn btn-action">Remove Background</button></div>
+        <div class="right-action"><button id="subscribeBtn" class="btn btn-subscribe">★ Subscribe</button></div>
+      </div>
+
+      <div class="center-row" style="display:flex;justify-content:center;margin-top:14px">
+        <button id="downloadBtn" class="btn-download" disabled>Download</button>
       </div>
 
       <div class="footer">
+        <div style="display:flex;gap:12px;align-items:center">
+          <div style="display:flex;align-items:center;gap:10px;font-weight:700;color:#111">
+            <div style="width:16px;height:16px;border-radius:6px;background:#000"></div>
+            <div>Your Plan: <strong>Free</strong></div>
+          </div>
+
+          <div style="margin-left:auto" class="trials-container">
+            <div class="trials-oval">Trials: <span id="trialsCount">3</span></div>
+            <div class="trials-progress-wrap"><div id="trialsProgress" class="trials-progress" style="width:100%"></div></div>
+          </div>
+        </div>
+
         <div class="status-pill" id="status">Status: Idle</div>
         <div style="margin-top:8px"><a class="privacy" href="privacy.html" target="_blank" rel="noopener">Privacy Policy: Read</a></div>
       </div>
@@ -187,19 +229,18 @@
     const fileInput = document.getElementById('fileInput');
     const dropArea = document.getElementById('dropArea');
     const uploadContent = document.getElementById('uploadContent');
-    const generateBtn = document.getElementById('generateBtn');
-    const subscribeBtn = document.getElementById('subscribeBtn');
-    const downloadBtn = document.getElementById('downloadBtn');
-    const stopBtn = document.getElementById('stopBtn');
+    const uploadBtn = document.getElementById('uploadBtn');
+    const removeBtn = document.getElementById('removeBtn');
     const resultPreview = document.getElementById('resultPreview');
-    const resultNote = document.getElementById('resultNote');
+    const downloadBtn = document.getElementById('downloadBtn');
     const statusEl = document.getElementById('status');
+    const subscribeBtn = document.getElementById('subscribeBtn');
     const trialsCountEl = document.getElementById('trialsCount');
     const trialsProgress = document.getElementById('trialsProgress');
+    const resultNote = document.getElementById('resultNote');
 
-    // keep upload button simple: label handles click; no double dialog
-    // generateBtn will act like "Remove Background" / process
-    generateBtn.addEventListener('click', ()=> fileInput.click()); // reuse to open file chooser for demo if none selected
+    // uploadBtn triggers file input; label handles box click by default
+    uploadBtn.addEventListener('click', ()=> fileInput.click());
 
     let trials = 3;
     function updateTrialsUI(){
@@ -207,12 +248,12 @@
       const pct = Math.round((trials / 3) * 100);
       trialsProgress.style.width = pct + '%';
       if(trials <= 0){
-        generateBtn.disabled = true;
-        generateBtn.style.opacity = '0.6';
+        removeBtn.disabled = true;
+        removeBtn.style.opacity = '0.6';
         subscribeBtn.classList.add('subscribe-pulse');
         setStatus('Trials finished — please subscribe');
       } else {
-        generateBtn.disabled = false;
+        removeBtn.disabled = false;
         subscribeBtn.classList.remove('subscribe-pulse');
       }
     }
@@ -237,7 +278,7 @@
       resultNote.style.display = 'block';
     }
 
-    // drag/drop handling
+    // drag/drop
     dropArea.addEventListener('dragover', e=>{ e.preventDefault(); dropArea.classList.add('hover'); });
     dropArea.addEventListener('dragleave', e=>{ e.preventDefault(); dropArea.classList.remove('hover'); });
     dropArea.addEventListener('drop', e=>{ e.preventDefault(); dropArea.classList.remove('hover'); if(e.dataTransfer.files.length) handleFile(e.dataTransfer.files[0]); });
@@ -255,18 +296,18 @@
       setStatus('Image ready');
     }
 
-    // "Generate" = process / remove background (demo)
-    generateBtn.addEventListener('click', async ()=>{
+    // remove background (demo) -> replace with real API call in future
+    removeBtn.addEventListener('click', async ()=>{
       if(!uploadedBlobUrl){ alert('Please upload an image first.'); return; }
       if(trials <= 0){ alert('No trials left. Please subscribe.'); return; }
       setStatus('Processing...');
-      generateBtn.disabled = true;
+      removeBtn.disabled = true;
       resultNote.style.display = 'none';
 
-      // simulate server processing (replace with real fetch to backend)
-      await new Promise(r=>setTimeout(r,1400));
+      // simulate server processing (replace with fetch to your backend)
+      await new Promise(r=>setTimeout(r,1500));
 
-      // demo: use uploaded image as result
+      // demo: use uploaded image as result (in production, use server response blob)
       if (processedBlobUrl && processedBlobUrl !== uploadedBlobUrl) URL.revokeObjectURL(processedBlobUrl);
       processedBlobUrl = uploadedBlobUrl;
       resultPreview.src = processedBlobUrl;
@@ -278,10 +319,10 @@
       updateTrialsUI();
 
       setStatus('Done');
-      generateBtn.disabled = false;
+      removeBtn.disabled = false;
     });
 
-    // Download
+    // download
     downloadBtn.addEventListener('click', ()=>{
       if(!resultPreview.src) return;
       const a = document.createElement('a');
@@ -290,22 +331,17 @@
       a.click();
     });
 
-    // Stop (demo) - just clear processing and reset UI
-    stopBtn.addEventListener('click', ()=>{
-      setStatus('Stopped');
-      resultNote.style.display = 'block';
-      if (processedBlobUrl) { URL.revokeObjectURL(processedBlobUrl); processedBlobUrl = null; resultPreview.style.display = 'none'; }
-      downloadBtn.disabled = true;
-    });
-
-    // Subscribe demo
+    // subscribe demo
     subscribeBtn.addEventListener('click', ()=>{
-      alert('Subscribe Pro flow (demo). In production this will open a purchase dialog.');
+      alert('Subscribe flow (demo). After packaging, this will open the Microsoft Store purchase dialog.');
     });
 
     // init
     updateTrialsUI();
-    window.addEventListener('beforeunload', ()=>{ if (uploadedBlobUrl) URL.revokeObjectURL(uploadedBlobUrl); });
+
+    window.addEventListener('beforeunload', ()=>{
+      if (uploadedBlobUrl) URL.revokeObjectURL(uploadedBlobUrl);
+    });
   </script>
 </body>
 </html>
