@@ -1,1 +1,175 @@
 
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>MagicCutBG</title>
+  <link rel="manifest" href="/manifest.json" />
+  <style>
+    /* Simple styles to match your design screenshot */
+    :root{
+      --panel-bg:#fff;
+      --accent:#6a5cff;
+      --muted:#f1f1f6;
+      --green:#35c57a;
+      --yellow:#ffc94d;
+      --purple:#9b6bff;
+      --radius:12px;
+      --shadow:0 6px 18px rgba(0,0,0,0.06);
+    }
+    html,body{height:100%;margin:0;font-family:Inter,Segoe UI,Arial,sans-serif;background:#fafafa;color:#111}
+    .app{display:flex;height:100vh;gap:18px;padding:18px;box-sizing:border-box}
+    .left{width:360px;background:var(--panel-bg);border-radius:12px;padding:18px;box-shadow:var(--shadow);display:flex;flex-direction:column;gap:12px}
+    .brand{text-align:center}
+    .brand h1{margin:6px 0;color:var(--purple);font-size:28px}
+    .upload{border:2px dashed #e6e6ef;border-radius:10px;padding:22px;text-align:center;background:var(--muted);cursor:pointer;min-height:160px;display:flex;align-items:center;justify-content:center}
+    .upload input{display:none}
+    .btn{display:inline-block;padding:10px 16px;border-radius:999px;border:none;cursor:pointer;font-weight:600}
+    .btn-primary{background:linear-gradient(90deg,var(--accent),#6aa3ff);color:#fff}
+    .btn-sub{background:linear-gradient(90deg,var(--yellow),#f2b53c);color:#000}
+    .btn-green{background:linear-gradient(90deg,var(--green),#27b36f);color:#fff}
+    .controls{display:flex;gap:8px;align-items:center}
+    .field{display:flex;flex-direction:column;gap:6px}
+    select,input{padding:8px;border-radius:8px;border:1px solid #e6e6ef}
+    .download{background:#00b894;color:#fff;border-radius:999px;padding:10px;text-align:center}
+    .footer{font-size:12px;color:#666;margin-top:auto}
+    .right{flex:1;background:#fff;border-radius:12px;padding:18px;box-shadow:var(--shadow);display:flex;align-items:center;justify-content:center;color:#999}
+    .preview-img{max-width:100%;max-height:60vh;border-radius:8px;box-shadow:0 8px 20px rgba(0,0,0,0.06)}
+    .status{font-size:14px;color:#444}
+    .subscribe-row{display:flex;gap:8px;align-items:center;margin-top:8px}
+  </style>
+</head>
+<body>
+  <div class="app">
+    <div class="left">
+      <div class="brand">
+        <h1>MagicCutBG</h1>
+        <div style="font-size:13px;color:#666">Remove backgrounds in 1 click.</div>
+      </div>
+
+      <label class="upload" id="dropArea">
+        <input id="fileInput" type="file" accept="image/*" />
+        <div>
+          <div style="font-weight:600;color:#666">Click here to choose image</div>
+          <div style="font-size:12px;color:#999">or drag & drop (JPG/PNG up to 15 MB)</div>
+        </div>
+      </label>
+
+      <button id="uploadBtn" class="btn btn-primary">Upload Image</button>
+
+      <div class="controls">
+        <div class="field" style="flex:1">
+          <label style="font-size:12px;color:#777">Format</label>
+          <select id="format">
+            <option>PNG (transparent)</option>
+            <option>JPEG</option>
+          </select>
+        </div>
+        <div class="field" style="width:120px">
+          <label style="font-size:12px;color:#777">Size</label>
+          <select id="size">
+            <option>Auto</option>
+            <option>512x512</option>
+            <option>1024x1024</option>
+          </select>
+        </div>
+      </div>
+
+      <div style="display:flex;gap:8px;margin-top:8px">
+        <button id="removeBtn" class="btn btn-green" style="flex:1">Remove Background</button>
+        <button id="subscribeBtn" class="btn btn-sub">★ Subscribe</button>
+      </div>
+
+      <div style="margin-top:12px">
+        <button id="downloadBtn" class="download" disabled>Download</button>
+      </div>
+
+      <div class="footer">
+        <div style="height:10px"></div>
+        <div style="background:#000;color:#fff;padding:8px;border-radius:8px;display:inline-block">Your Plan: Free</div>
+        <div style="margin-top:8px"><a href="#" target="_blank">Privacy Policy: Read</a></div>
+      </div>
+    </div>
+
+    <div class="right" id="resultArea">
+      <div>
+        <div class="status">Result will appear here after background removal.</div>
+        <img id="preview" class="preview-img" style="display:none" src="" alt="preview"/>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Register service worker
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('/service-worker.js').catch(()=>{/* ignore */});
+    }
+
+    // Basic UI logic (placeholder functionality)
+    const fileInput = document.getElementById('fileInput');
+    const dropArea = document.getElementById('dropArea');
+    const uploadBtn = document.getElementById('uploadBtn');
+    const removeBtn = document.getElementById('removeBtn');
+    const preview = document.getElementById('preview');
+    const resultArea = document.getElementById('resultArea');
+    const downloadBtn = document.getElementById('downloadBtn');
+    const subscribeBtn = document.getElementById('subscribeBtn');
+
+    dropArea.addEventListener('click', ()=> fileInput.click());
+    uploadBtn.addEventListener('click', ()=> fileInput.click());
+
+    dropArea.addEventListener('dragover', e=>{ e.preventDefault(); dropArea.style.borderColor='#bfc7ff'; });
+    dropArea.addEventListener('dragleave', e=>{ e.preventDefault(); dropArea.style.borderColor='#e6e6ef'; });
+    dropArea.addEventListener('drop', e=>{ e.preventDefault(); dropArea.style.borderColor='#e6e6ef'; if(e.dataTransfer.files.length) handleFile(e.dataTransfer.files[0]); });
+
+    fileInput.addEventListener('change', e => { if(e.target.files[0]) handleFile(e.target.files[0]); });
+
+    function handleFile(file){
+      if(!file.type.startsWith('image/')) { alert('Please select an image'); return; }
+      const url = URL.createObjectURL(file);
+      preview.src = url; preview.style.display='block';
+      resultArea.querySelector('.status').style.display='none';
+      downloadBtn.disabled = false;
+      // store blob for download (placeholder)
+      preview.dataset.blobUrl = url;
+    }
+
+    // Placeholder remove background action (for demo)
+    removeBtn.addEventListener('click', async ()=> {
+      if(!preview.src){ alert('Please upload an image first.'); return; }
+      removeBtn.textContent = 'Processing...'; removeBtn.disabled = true;
+      // Simulate network/background removal
+      await new Promise(r=>setTimeout(r,1500));
+      // For demo we just show same image as "result"
+      resultArea.querySelector('.status').style.display='none';
+      preview.style.display='block';
+      removeBtn.textContent = 'Remove Background'; removeBtn.disabled = false;
+      alert('Background removal simulated (demo). For real removal integrate API on server.');
+    });
+
+    // Download demo image
+    downloadBtn.addEventListener('click', ()=> {
+      const a = document.createElement('a');
+      a.href = preview.dataset.blobUrl || preview.src;
+      a.download = 'result.png';
+      a.click();
+    });
+
+    // Subscribe button: if running as packaged app (Store), call Store API. Else fallback to info.
+    subscribeBtn.addEventListener('click', async ()=>{
+      if (window.Windows && Windows.Services && Windows.Services.Store) {
+        try {
+          const storeContext = Windows.Services.Store.StoreContext.getDefault();
+          const productId = "YOUR_PRODUCT_ID"; // replace with Partner Center product ID
+          const res = await storeContext.requestPurchaseAsync(productId);
+          if(res.status === Windows.Services.Store.StorePurchaseStatus.succeeded) alert('Subscription successful!');
+          else alert('Purchase status: ' + res.status);
+        } catch(e){ alert('Store purchase failed: '+e.message); }
+      } else {
+        alert('Subscribe (demo): To test native Store purchase, install the packaged app from Store / sideloaded package.');
+      }
+    });
+  </script>
+</body>
+</html>
