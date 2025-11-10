@@ -23,10 +23,10 @@
     body{margin:0;font-family:Inter,Segoe UI,Arial,sans-serif;background:linear-gradient(180deg,var(--bg),#fff);color:#111}
     .app{display:flex;gap:20px;padding:28px;height:100vh;align-items:flex-start}
     .left{width:380px;background:var(--card);border-radius:var(--radius);padding:22px;box-shadow:var(--shadow-lg);display:flex;flex-direction:column}
-    .right{flex:1;background:var(--card);border-radius:var(--radius);padding:22px;box-shadow:var(--shadow-sm);display:flex;flex-direction:column}
+    .right{flex:1;background:var(--card);border-radius:var(--radius);padding:18px;box-shadow:var(--shadow-sm);display:flex;flex-direction:column}
     .brand{text-align:center;margin-bottom:8px;padding-top:8px}
     .brand h1{
-      font-size:42px; /* slightly smaller to avoid clipping */
+      font-size:42px;
       margin:4px 0 2px 0;
       line-height:1;
       color:transparent;
@@ -35,53 +35,58 @@
       text-shadow:0 8px 24px rgba(155,107,255,0.10)
     }
     .brand p{margin:0;color:#666;font-size:14px}
+
     /* upload box bigger */
     .upload{border-radius:12px;border:2px dashed #e9e6f6;padding:18px;min-height:300px;background:linear-gradient(180deg,#fff,#fbfbff);display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden}
     .upload.hover{border-color:var(--accent1)}
     .upload img{max-width:100%;max-height:var(--max-upload-height);border-radius:12px;object-fit:contain;display:block}
     .upload .placeholder{text-align:center;color:#9aa0b3;font-size:14px}
     .upload input{display:none}
-    /* shiny 3D buttons */
+
+    /* shiny 3D buttons (upload style) */
     .btn{display:inline-block;padding:12px 18px;border-radius:999px;border:none;cursor:pointer;font-weight:700;position:relative;overflow:hidden;box-shadow:0 10px 28px rgba(30,20,80,0.06);transition:transform .14s ease,box-shadow .14s ease}
     .btn:active{transform:translateY(1px)}
     .btn:before{content:'';position:absolute;left:-40%;top:-60%;width:80%;height:200%;transform:rotate(25deg);opacity:0.25;background:linear-gradient(90deg,rgba(255,255,255,0.9),rgba(255,255,255,0.15));transition:all .6s ease}
     .btn:hover:before{left:120%;opacity:0.6}
     .btn-primary{background:linear-gradient(90deg,var(--accent1),var(--accent2));color:#fff}
+    /* Make Remove and Download use same upload style */
+    .btn-action{background:linear-gradient(90deg,var(--accent1),var(--accent2));color:#fff;box-shadow:0 12px 36px rgba(106,99,255,0.12)}
     .btn-sub{background:linear-gradient(90deg,#ffd36b,#ffc94d);color:#111;box-shadow:0 12px 38px rgba(255,184,90,0.12)}
-    .btn-green{background:linear-gradient(90deg,#34d399,#27b36f);color:#fff}
-    .download{display:block;text-align:center;padding:12px;border-radius:999px;background:linear-gradient(90deg,#35d0a2,#27b36f);color:#fff;font-weight:800;margin-top:12px}
+    .download{display:block;text-align:center;padding:12px;border-radius:999px;background:linear-gradient(90deg,var(--accent1),var(--accent2));color:#fff;font-weight:800;margin-top:12px;box-shadow:0 12px 36px rgba(106,99,255,0.12)}
     .controls{display:flex;gap:12px;margin-top:12px}
     .field{flex:1}
     select,input{padding:10px;border-radius:10px;border:1px solid #e9e6f6;width:100%}
     .subscribe-row{display:flex;gap:8px;align-items:center;margin-top:12px}
     .footer{font-size:13px;color:#666;margin-top:auto;display:flex;flex-direction:column;gap:10px}
     .status-pill{background:#000;color:#fff;padding:12px;border-radius:12px;width:100%;text-align:left;box-shadow:0 8px 24px rgba(0,0,0,0.12)}
-    /* Professional, compact trials badge */
-    .trials-wrap{margin-left:auto;display:flex;align-items:center;gap:12px}
-    .plan-label{display:flex;align-items:center;gap:10px;font-weight:700;color:#111}
-    .plan-dot{width:16px;height:16px;border-radius:6px;background:#000}
-    .trials-badge{
+
+    /* New trials: oval + progress bar */
+    .trials-container{display:flex;align-items:center;gap:14px;margin-left:auto}
+    .trials-oval{
+      background:rgba(122,91,255,0.08);
+      border-radius:999px;
+      padding:8px 14px;
+      font-weight:800;
+      color:var(--accent1);
       display:inline-flex;
       align-items:center;
       gap:10px;
-      padding:6px 10px;
-      border-radius:999px;
-      background:linear-gradient(90deg,#fff,#f8f9ff);
-      border:1px solid rgba(0,0,0,0.05);
-      box-shadow:0 6px 18px rgba(110,90,200,0.05);
-      font-weight:800;color:#333;font-size:14px;
+      box-shadow:0 6px 18px rgba(122,91,255,0.06);
+      min-width:80px; justify-content:center;
     }
-    .trials-count{
-      background:linear-gradient(90deg,#7a5bff,#6aa3ff);color:#fff;padding:6px 10px;border-radius:999px;font-weight:900;font-size:14px;min-width:36px;text-align:center;
-    }
-    /* right preview area: center everything */
+    .trials-progress-wrap{width:120px;height:10px;background:#f1f1f6;border-radius:999px;overflow:hidden;border:1px solid rgba(0,0,0,0.03)}
+    .trials-progress{height:100%;background:linear-gradient(90deg,#2ecc71,#27b36f);width:100%;transition:width .3s ease}
+
+    /* right preview area: center message */
     .right{display:flex;align-items:center;justify-content:center}
-    .result-wrap{width:100%;height:100%;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:12px;padding:10px}
-    .result-wrap .note{color:#999;font-size:16px}
+    .result-wrap{width:100%;height:100%;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:12px;padding:20px}
+    .result-note{color:#9aa0b3;font-size:16px;text-align:center}
     .result-img{max-width:95%;max-height:80vh;border-radius:12px;box-shadow:0 20px 40px rgba(30,20,80,0.06);object-fit:contain;display:none}
+
     a.privacy{color:#666;text-decoration:underline}
     .subscribe-pulse{animation: pulse 1.6s infinite}
     @keyframes pulse{0%{transform:scale(1)}50%{transform:scale(1.03)}100%{transform:scale(1)}}
+
     @media (max-width:900px){ .app{flex-direction:column;height:auto;padding:18px} .left{width:100%} .right{width:100%} .brand h1{font-size:36px} }
   </style>
 </head>
@@ -93,7 +98,7 @@
         <p>Remove backgrounds in 1 click.</p>
       </div>
 
-      <!-- label wraps input so clicking box opens file dialog (no extra JS click) -->
+      <!-- label wraps input so clicking box opens file dialog (single click only) -->
       <label class="upload" id="dropArea" title="Click or drop image">
         <input id="fileInput" type="file" accept="image/*" />
         <div id="uploadContent">
@@ -125,7 +130,7 @@
       </div>
 
       <div style="display:flex;gap:10px;margin-top:14px">
-        <button id="removeBtn" class="btn btn-green" style="flex:1">Remove Background</button>
+        <button id="removeBtn" class="btn btn-action" style="flex:1">Remove Background</button>
         <button id="subscribeBtn" class="btn btn-sub">★ Subscribe</button>
       </div>
 
@@ -133,24 +138,25 @@
 
       <div class="footer">
         <div style="display:flex;gap:12px;align-items:center">
-          <div class="plan-label">
-            <div class="plan-dot"></div>
+          <div style="display:flex;align-items:center;gap:10px;font-weight:700;color:#111">
+            <div style="width:16px;height:16px;border-radius:6px;background:#000"></div>
             <div>Your Plan: <strong>Free</strong></div>
           </div>
-          <div style="margin-left:auto" class="trials-badge">
-            <div style="font-size:13px;color:#666">Trials</div>
-            <div class="trials-count" id="trialsCount">3</div>
+
+          <div style="margin-left:auto" class="trials-container">
+            <div class="trials-oval">Trials: <span id="trialsCount">3</span></div>
+            <div class="trials-progress-wrap"><div id="trialsProgress" class="trials-progress" style="width:100%"></div></div>
           </div>
         </div>
 
         <div class="status-pill" id="status">Status: Idle</div>
-        <div><a class="privacy" href="privacy.html" target="_blank" rel="noopener">Privacy Policy: Read</a></div>
+        <div style="margin-top:8px"><a class="privacy" href="privacy.html" target="_blank" rel="noopener">Privacy Policy: Read</a></div>
       </div>
     </div>
 
     <div class="right">
       <div class="result-wrap">
-        <div class="note" id="resultNote">Result will appear here after background removal.</div>
+        <div class="result-note" id="resultNote">Result will appear here after background removal.</div>
         <img id="resultPreview" class="result-img" src="" alt="result" />
       </div>
     </div>
@@ -173,14 +179,17 @@
     const statusEl = document.getElementById('status');
     const subscribeBtn = document.getElementById('subscribeBtn');
     const trialsCountEl = document.getElementById('trialsCount');
+    const trialsProgress = document.getElementById('trialsProgress');
     const resultNote = document.getElementById('resultNote');
 
-    // Only use label default click; removeArea JS click removed to avoid double dialog
+    // single click: uploadBtn triggers file input; label handles box click by itself
     uploadBtn.addEventListener('click', ()=> fileInput.click());
 
     let trials = 3;
     function updateTrialsUI(){
       trialsCountEl.textContent = trials;
+      const pct = Math.round((trials / 3) * 100);
+      trialsProgress.style.width = pct + '%';
       if(trials <= 0){
         removeBtn.disabled = true;
         removeBtn.style.opacity = '0.6';
@@ -212,7 +221,7 @@
       resultNote.style.display = 'block';
     }
 
-    // drag/drop handlers still work for dropping; no click handler to avoid double open
+    // drag/drop
     dropArea.addEventListener('dragover', e=>{ e.preventDefault(); dropArea.classList.add('hover'); });
     dropArea.addEventListener('dragleave', e=>{ e.preventDefault(); dropArea.classList.remove('hover'); });
     dropArea.addEventListener('drop', e=>{ e.preventDefault(); dropArea.classList.remove('hover'); if(e.dataTransfer.files.length) handleFile(e.dataTransfer.files[0]); });
@@ -230,7 +239,7 @@
       setStatus('Image ready');
     }
 
-    // remove background (demo) -> replace with real API call in future
+    // remove background (demo) -> replace with real API call later
     removeBtn.addEventListener('click', async ()=>{
       if(!uploadedBlobUrl){ alert('Please upload an image first.'); return; }
       if(trials <= 0){ alert('No trials left. Please subscribe.'); return; }
@@ -238,7 +247,7 @@
       removeBtn.disabled = true;
       resultNote.style.display = 'none';
 
-      // simulate server processing (replace with real fetch to backend)
+      // simulate server processing (replace with fetch to your backend)
       await new Promise(r=>setTimeout(r,1500));
 
       // demo: use uploaded image as result
