@@ -23,7 +23,7 @@
     body{margin:0;font-family:Inter,Segoe UI,Arial,sans-serif;background:linear-gradient(180deg,var(--bg),#fff);color:#111}
     .app{display:flex;gap:20px;padding:28px;height:100vh;align-items:flex-start}
     .left{width:380px;background:var(--card);border-radius:var(--radius);padding:22px;box-shadow:var(--shadow-lg);display:flex;flex-direction:column}
-    .right{flex:1;background:var(--card);border-radius:var(--radius);padding:18px;box-shadow:var(--shadow-sm);display:flex;flex-direction:column}
+    .right{flex:1;background:var(--card);border-radius:var(--radius);padding:18px;box-shadow:var(--shadow-sm);display:flex;align-items:center;justify-content:center}
     .brand{text-align:center;margin-bottom:8px;padding-top:8px}
     .brand h1{
       font-size:42px;
@@ -49,7 +49,7 @@
     .btn:before{content:'';position:absolute;left:-40%;top:-60%;width:80%;height:200%;transform:rotate(25deg);opacity:0.25;background:linear-gradient(90deg,rgba(255,255,255,0.9),rgba(255,255,255,0.15));transition:all .6s ease}
     .btn:hover:before{left:120%;opacity:0.6}
     .btn-primary{background:linear-gradient(90deg,var(--accent1),var(--accent2));color:#fff}
-    /* Make Remove and Download use same upload style */
+    /* Remove & Download use same upload style */
     .btn-action{background:linear-gradient(90deg,var(--accent1),var(--accent2));color:#fff;box-shadow:0 12px 36px rgba(106,99,255,0.12)}
     .btn-sub{background:linear-gradient(90deg,#ffd36b,#ffc94d);color:#111;box-shadow:0 12px 38px rgba(255,184,90,0.12)}
     .download{display:block;text-align:center;padding:12px;border-radius:999px;background:linear-gradient(90deg,var(--accent1),var(--accent2));color:#fff;font-weight:800;margin-top:12px;box-shadow:0 12px 36px rgba(106,99,255,0.12)}
@@ -60,28 +60,28 @@
     .footer{font-size:13px;color:#666;margin-top:auto;display:flex;flex-direction:column;gap:10px}
     .status-pill{background:#000;color:#fff;padding:12px;border-radius:12px;width:100%;text-align:left;box-shadow:0 8px 24px rgba(0,0,0,0.12)}
 
-    /* New trials: oval + progress bar */
+    /* Trials: oval + progress look (matches your screenshot) */
     .trials-container{display:flex;align-items:center;gap:14px;margin-left:auto}
     .trials-oval{
       background:rgba(122,91,255,0.08);
       border-radius:999px;
-      padding:8px 14px;
+      padding:10px 16px;
       font-weight:800;
       color:var(--accent1);
       display:inline-flex;
       align-items:center;
-      gap:10px;
+      gap:8px;
       box-shadow:0 6px 18px rgba(122,91,255,0.06);
-      min-width:80px; justify-content:center;
+      min-width:90px; justify-content:center;
+      font-size:14px;
     }
-    .trials-progress-wrap{width:120px;height:10px;background:#f1f1f6;border-radius:999px;overflow:hidden;border:1px solid rgba(0,0,0,0.03)}
+    .trials-progress-wrap{width:140px;height:12px;background:#f1f1f6;border-radius:999px;overflow:hidden;border:1px solid rgba(0,0,0,0.03)}
     .trials-progress{height:100%;background:linear-gradient(90deg,#2ecc71,#27b36f);width:100%;transition:width .3s ease}
 
-    /* right preview area: center message */
-    .right{display:flex;align-items:center;justify-content:center}
-    .result-wrap{width:100%;height:100%;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:12px;padding:20px}
+    /* right preview area: exact center for note and big result image */
+    .result-wrap{width:100%;height:calc(100vh - 84px);display:flex;align-items:center;justify-content:center;flex-direction:column;gap:12px;padding:20px}
     .result-note{color:#9aa0b3;font-size:16px;text-align:center}
-    .result-img{max-width:95%;max-height:80vh;border-radius:12px;box-shadow:0 20px 40px rgba(30,20,80,0.06);object-fit:contain;display:none}
+    .result-img{max-width:85%;max-height:85%;border-radius:12px;box-shadow:0 20px 40px rgba(30,20,80,0.06);object-fit:contain;display:none}
 
     a.privacy{color:#666;text-decoration:underline}
     .subscribe-pulse{animation: pulse 1.6s infinite}
@@ -98,7 +98,7 @@
         <p>Remove backgrounds in 1 click.</p>
       </div>
 
-      <!-- label wraps input so clicking box opens file dialog (single click only) -->
+      <!-- label wraps input so clicking box opens file dialog -->
       <label class="upload" id="dropArea" title="Click or drop image">
         <input id="fileInput" type="file" accept="image/*" />
         <div id="uploadContent">
@@ -182,7 +182,7 @@
     const trialsProgress = document.getElementById('trialsProgress');
     const resultNote = document.getElementById('resultNote');
 
-    // single click: uploadBtn triggers file input; label handles box click by itself
+    // single click: uploadBtn triggers file input; label handles box click by default
     uploadBtn.addEventListener('click', ()=> fileInput.click());
 
     let trials = 3;
@@ -239,7 +239,7 @@
       setStatus('Image ready');
     }
 
-    // remove background (demo) -> replace with real API call later
+    // remove background (demo) -> replace with real API call in future
     removeBtn.addEventListener('click', async ()=>{
       if(!uploadedBlobUrl){ alert('Please upload an image first.'); return; }
       if(trials <= 0){ alert('No trials left. Please subscribe.'); return; }
@@ -250,7 +250,7 @@
       // simulate server processing (replace with fetch to your backend)
       await new Promise(r=>setTimeout(r,1500));
 
-      // demo: use uploaded image as result
+      // demo: use uploaded image as result (in production, use server response blob)
       if (processedBlobUrl && processedBlobUrl !== uploadedBlobUrl) URL.revokeObjectURL(processedBlobUrl);
       processedBlobUrl = uploadedBlobUrl;
       resultPreview.src = processedBlobUrl;
