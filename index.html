@@ -23,11 +23,10 @@
     body{margin:0;font-family:Inter,Segoe UI,Arial,sans-serif;background:linear-gradient(180deg,var(--bg),#fff);color:#111}
     .app{display:flex;gap:20px;padding:28px;height:100vh;align-items:flex-start}
     .left{width:380px;background:var(--card);border-radius:var(--radius);padding:22px;box-shadow:var(--shadow-lg);display:flex;flex-direction:column}
-    .right{flex:1;background:var(--card);border-radius:var(--radius);padding:22px;box-shadow:var(--shadow-sm);display:flex;flex-direction:column;align-items:center;justify-content:center}
+    .right{flex:1;background:var(--card);border-radius:var(--radius);padding:22px;box-shadow:var(--shadow-sm);display:flex;flex-direction:column}
     .brand{text-align:center;margin-bottom:8px;padding-top:8px}
-    /* title slightly smaller and centered */
     .brand h1{
-      font-size:44px; /* slightly smaller */
+      font-size:42px; /* slightly smaller to avoid clipping */
       margin:4px 0 2px 0;
       line-height:1;
       color:transparent;
@@ -37,7 +36,7 @@
     }
     .brand p{margin:0;color:#666;font-size:14px}
     /* upload box bigger */
-    .upload{border-radius:12px;border:2px dashed #e9e6f6;padding:18px;min-height:280px;background:linear-gradient(180deg,#fff,#fbfbff);display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden}
+    .upload{border-radius:12px;border:2px dashed #e9e6f6;padding:18px;min-height:300px;background:linear-gradient(180deg,#fff,#fbfbff);display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden}
     .upload.hover{border-color:var(--accent1)}
     .upload img{max-width:100%;max-height:var(--max-upload-height);border-radius:12px;object-fit:contain;display:block}
     .upload .placeholder{text-align:center;color:#9aa0b3;font-size:14px}
@@ -57,25 +56,32 @@
     .subscribe-row{display:flex;gap:8px;align-items:center;margin-top:12px}
     .footer{font-size:13px;color:#666;margin-top:auto;display:flex;flex-direction:column;gap:10px}
     .status-pill{background:#000;color:#fff;padding:12px;border-radius:12px;width:100%;text-align:left;box-shadow:0 8px 24px rgba(0,0,0,0.12)}
-    /* Professional trials badge */
+    /* Professional, compact trials badge */
     .trials-wrap{margin-left:auto;display:flex;align-items:center;gap:12px}
     .plan-label{display:flex;align-items:center;gap:10px;font-weight:700;color:#111}
-    .plan-dot{width:18px;height:18px;border-radius:6px;background:#000}
+    .plan-dot{width:16px;height:16px;border-radius:6px;background:#000}
     .trials-badge{
-      background:linear-gradient(90deg,#ffffff,#f7f7ff);
-      border-radius:12px;padding:8px 12px;border:1px solid rgba(0,0,0,0.06);display:flex;align-items:center;gap:10px;box-shadow:0 12px 30px rgba(110,90,200,0.05)
+      display:inline-flex;
+      align-items:center;
+      gap:10px;
+      padding:6px 10px;
+      border-radius:999px;
+      background:linear-gradient(90deg,#fff,#f8f9ff);
+      border:1px solid rgba(0,0,0,0.05);
+      box-shadow:0 6px 18px rgba(110,90,200,0.05);
+      font-weight:800;color:#333;font-size:14px;
     }
     .trials-count{
-      background:linear-gradient(90deg,#7a5bff,#6aa3ff);color:#fff;padding:8px 10px;border-radius:10px;font-weight:900;font-size:15px;min-width:44px;text-align:center;
+      background:linear-gradient(90deg,#7a5bff,#6aa3ff);color:#fff;padding:6px 10px;border-radius:999px;font-weight:900;font-size:14px;min-width:36px;text-align:center;
     }
-    /* right preview area */
-    .result-wrap{width:100%;height:100%;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:12px}
-    .result-wrap .note{color:#999}
+    /* right preview area: center everything */
+    .right{display:flex;align-items:center;justify-content:center}
+    .result-wrap{width:100%;height:100%;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:12px;padding:10px}
+    .result-wrap .note{color:#999;font-size:16px}
     .result-img{max-width:95%;max-height:80vh;border-radius:12px;box-shadow:0 20px 40px rgba(30,20,80,0.06);object-fit:contain;display:none}
     a.privacy{color:#666;text-decoration:underline}
     .subscribe-pulse{animation: pulse 1.6s infinite}
     @keyframes pulse{0%{transform:scale(1)}50%{transform:scale(1.03)}100%{transform:scale(1)}}
-    /* small responsive */
     @media (max-width:900px){ .app{flex-direction:column;height:auto;padding:18px} .left{width:100%} .right{width:100%} .brand h1{font-size:36px} }
   </style>
 </head>
@@ -87,6 +93,7 @@
         <p>Remove backgrounds in 1 click.</p>
       </div>
 
+      <!-- label wraps input so clicking box opens file dialog (no extra JS click) -->
       <label class="upload" id="dropArea" title="Click or drop image">
         <input id="fileInput" type="file" accept="image/*" />
         <div id="uploadContent">
@@ -143,7 +150,7 @@
 
     <div class="right">
       <div class="result-wrap">
-        <div class="note">Result will appear here after background removal.</div>
+        <div class="note" id="resultNote">Result will appear here after background removal.</div>
         <img id="resultPreview" class="result-img" src="" alt="result" />
       </div>
     </div>
@@ -166,6 +173,10 @@
     const statusEl = document.getElementById('status');
     const subscribeBtn = document.getElementById('subscribeBtn');
     const trialsCountEl = document.getElementById('trialsCount');
+    const resultNote = document.getElementById('resultNote');
+
+    // Only use label default click; removeArea JS click removed to avoid double dialog
+    uploadBtn.addEventListener('click', ()=> fileInput.click());
 
     let trials = 3;
     function updateTrialsUI(){
@@ -198,12 +209,10 @@
     function clearResult(){
       resultPreview.style.display = 'none';
       resultPreview.src = '';
+      resultNote.style.display = 'block';
     }
 
-    // file selection and drag/drop
-    dropArea.addEventListener('click', ()=> fileInput.click());
-    uploadBtn.addEventListener('click', ()=> fileInput.click());
-
+    // drag/drop handlers still work for dropping; no click handler to avoid double open
     dropArea.addEventListener('dragover', e=>{ e.preventDefault(); dropArea.classList.add('hover'); });
     dropArea.addEventListener('dragleave', e=>{ e.preventDefault(); dropArea.classList.remove('hover'); });
     dropArea.addEventListener('drop', e=>{ e.preventDefault(); dropArea.classList.remove('hover'); if(e.dataTransfer.files.length) handleFile(e.dataTransfer.files[0]); });
@@ -221,14 +230,15 @@
       setStatus('Image ready');
     }
 
-    // remove background (demo) -> here replace with real API call to your backend
+    // remove background (demo) -> replace with real API call in future
     removeBtn.addEventListener('click', async ()=>{
       if(!uploadedBlobUrl){ alert('Please upload an image first.'); return; }
       if(trials <= 0){ alert('No trials left. Please subscribe.'); return; }
       setStatus('Processing...');
       removeBtn.disabled = true;
+      resultNote.style.display = 'none';
 
-      // simulate server processing (replace this with fetch to your backend)
+      // simulate server processing (replace with real fetch to backend)
       await new Promise(r=>setTimeout(r,1500));
 
       // demo: use uploaded image as result
