@@ -9,22 +9,30 @@
     :root{
       --bg:#faf8ff;
       --card:#ffffff;
-      --accent1:#7a5bff; /* purple */
-      --accent2:#8bd1ff; /* blue */
-      --accent3:#ffb86b; /* yellow */
+      --accent1:#7a5bff;
+      --accent2:#6aa3ff;
+      --accent3:#ffc94d;
       --green:#2ecc71;
       --muted:#f3f4fb;
       --radius:14px;
     }
     *{box-sizing:border-box}
     body{margin:0;font-family:Inter,Segoe UI,Arial,sans-serif;background:linear-gradient(180deg,var(--bg),#fff);color:#111}
-    .app{display:flex;gap:18px;padding:22px;height:100vh}
+    .app{display:flex;gap:18px;padding:22px;height:100vh;align-items:flex-start}
     .left{width:370px;background:var(--card);border-radius:var(--radius);padding:20px;box-shadow:0 10px 30px rgba(30,20,80,0.06);display:flex;flex-direction:column}
     .right{flex:1;background:var(--card);border-radius:var(--radius);padding:20px;box-shadow:0 10px 30px rgba(30,20,80,0.04);display:flex;flex-direction:column;align-items:center;justify-content:center}
     .brand{text-align:center;margin-bottom:6px}
-    .brand h1{font-size:40px;margin:6px 0;line-height:1;color:transparent;
-      background:linear-gradient(90deg,#ff8bd1,#9b6bff,#6aa3ff);-webkit-background-clip:text;background-clip:text;font-weight:800;text-shadow:0 6px 18px rgba(155,107,255,0.12)}
-    .brand p{margin:0;color:#666}
+    /* make title bigger and not clipped */
+    .brand h1{
+      font-size:48px;
+      margin:6px 0 2px 0;
+      line-height:1;
+      color:transparent;
+      background:linear-gradient(90deg,#ff8bd1,#9b6bff,#6aa3ff);
+      -webkit-background-clip:text;background-clip:text;font-weight:900;
+      text-shadow:0 8px 20px rgba(155,107,255,0.12)
+    }
+    .brand p{margin:0;color:#666;font-size:15px}
     /* upload box */
     .upload{border-radius:12px;border:2px dashed #e9e6f6;padding:18px;min-height:200px;background:linear-gradient(180deg,#fff,#fbfbff);display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden}
     .upload.hover{border-color:var(--accent1)}
@@ -36,7 +44,7 @@
     .btn:active{transform:translateY(1px)}
     .btn:before{content:'';position:absolute;left:-40%;top:-60%;width:80%;height:200%;transform:rotate(25deg);opacity:0.25;background:linear-gradient(90deg,rgba(255,255,255,0.9),rgba(255,255,255,0.1));transition:all .6s ease}
     .btn:hover:before{left:120%;opacity:0.6}
-    .btn-primary{background:linear-gradient(90deg,var(--accent1),#6aa3ff);color:#fff}
+    .btn-primary{background:linear-gradient(90deg,var(--accent1),var(--accent2));color:#fff}
     .btn-sub{background:linear-gradient(90deg,#ffd36b,#ffc94d);color:#111;box-shadow:0 10px 30px rgba(255,184,90,0.18)}
     .btn-green{background:linear-gradient(90deg,#34d399,#2bb673);color:#fff}
     .download{display:block;text-align:center;padding:10px;border-radius:999px;background:linear-gradient(90deg,#35d0a2,#27b36f);color:#fff;font-weight:800;margin-top:10px}
@@ -44,14 +52,16 @@
     .field{flex:1}
     select,input{padding:10px;border-radius:10px;border:1px solid #e9e6f6;width:100%}
     .subscribe-row{display:flex;gap:8px;align-items:center;margin-top:12px}
-    .footer{font-size:13px;color:#666;margin-top:auto;display:flex;flex-direction:column;gap:6px}
+    .footer{font-size:13px;color:#666;margin-top:auto;display:flex;flex-direction:column;gap:8px}
     .status-pill{background:#000;color:#fff;padding:10px;border-radius:12px;width:100%;text-align:left;box-shadow:0 6px 18px rgba(0,0,0,0.12)}
+    .trials{font-weight:800;color:#111;background:linear-gradient(90deg,#fff,#f7f7ff);padding:10px;border-radius:10px;border:1px solid #eee;display:inline-block}
     /* right preview area */
     .result-wrap{width:100%;height:100%;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:12px}
     .result-wrap .note{color:#999}
     .result-img{max-width:95%;max-height:78vh;border-radius:12px;box-shadow:0 20px 40px rgba(30,20,80,0.06);object-fit:contain;display:none}
-    /* small tweaks */
     a.privacy{color:#666;text-decoration:underline}
+    .subscribe-pulse{animation: pulse 1.6s infinite}
+    @keyframes pulse{0%{transform:scale(1)}50%{transform:scale(1.03)}100%{transform:scale(1)}}
   </style>
 </head>
 <body>
@@ -100,12 +110,13 @@
       <button id="downloadBtn" class="download" disabled>Download</button>
 
       <div class="footer">
-        <div style="display:flex;gap:8px;align-items:center">
+        <div style="display:flex;gap:12px;align-items:center">
           <div style="width:18px;height:18px;border-radius:6px;background:#000"></div>
           <div style="font-weight:700">Your Plan: Free</div>
+          <div style="margin-left:auto" class="trials">Trials remaining: <span id="trialsCount">3</span></div>
         </div>
         <div class="status-pill" id="status">Status: Idle</div>
-        <div><a class="privacy" href="https://github.com/zeeali2600-ship-it/magiccutbg-site" target="_blank">Privacy Policy: Read</a></div>
+        <div><a class="privacy" href="https://github.com/zeeali2600-ship-it/magiccutbg-site" target="_blank" rel="noopener">Privacy Policy: Read</a></div>
       </div>
     </div>
 
@@ -118,7 +129,7 @@
   </div>
 
   <script>
-    // service worker registration (optional already present)
+    // service worker registration
     if ('serviceWorker' in navigator) {
       navigator.serviceWorker.register('/service-worker.js').catch(()=>{/* ignore */});
     }
@@ -133,12 +144,25 @@
     const downloadBtn = document.getElementById('downloadBtn');
     const statusEl = document.getElementById('status');
     const subscribeBtn = document.getElementById('subscribeBtn');
+    const trialsCountEl = document.getElementById('trialsCount');
+
+    // Trials logic (3 free tries)
+    let trials = 3;
+    function updateTrialsUI(){
+      trialsCountEl.textContent = trials;
+      if(trials <= 0){
+        removeBtn.disabled = true;
+        removeBtn.style.opacity = '0.6';
+        subscribeBtn.classList.add('subscribe-pulse');
+        setStatus('Trials finished — please subscribe');
+      }
+    }
+
+    function setStatus(text){ statusEl.textContent = 'Status: ' + text; }
 
     let uploadedBlobUrl = null;
     let processedBlobUrl = null;
 
-    // UI helpers
-    function setStatus(text){ statusEl.textContent = 'Status: ' + text; }
     function showUploadImage(url){
       uploadContent.innerHTML = '';
       const img = document.createElement('img');
@@ -173,20 +197,27 @@
       setStatus('Image ready');
     }
 
-    // Simulate background removal - this is where you'd call your secure backend API
+    // Remove background (demo simulation + trials decrement)
     removeBtn.addEventListener('click', async ()=>{
       if(!uploadedBlobUrl){ alert('Please upload an image first.'); return; }
+      if(trials <= 0){ alert('No trials left. Please subscribe.'); return; }
       setStatus('Processing...');
       removeBtn.disabled = true;
-      // simulate network delay
+
+      // simulate server call (replace with real API call later)
       await new Promise(r=>setTimeout(r,1800));
 
-      // For demo we just reuse uploaded image as "processed result".
-      if (processedBlobUrl) URL.revokeObjectURL(processedBlobUrl);
-      processedBlobUrl = uploadedBlobUrl; // in real app, replace with server response blob url
+      // Demo: use uploaded image as processed result
+      if (processedBlobUrl && processedBlobUrl !== uploadedBlobUrl) URL.revokeObjectURL(processedBlobUrl);
+      processedBlobUrl = uploadedBlobUrl;
       resultPreview.src = processedBlobUrl;
       resultPreview.style.display = 'block';
       downloadBtn.disabled = false;
+
+      // decrement trials
+      trials = Math.max(0, trials - 1);
+      updateTrialsUI();
+
       setStatus('Done');
       removeBtn.disabled = false;
     });
@@ -202,23 +233,16 @@
 
     // Subscribe behaviour (demo)
     subscribeBtn.addEventListener('click', ()=>{
-      if (window.Windows && Windows.Services && Windows.Services.Store) {
-        // packaged app flow (leave placeholder)
-        const storeContext = Windows.Services.Store.StoreContext.getDefault();
-        const productId = "YOUR_PRODUCT_ID";
-        storeContext.requestPurchaseAsync(productId).then(res=>{
-          if(res.status === Windows.Services.Store.StorePurchaseStatus.succeeded) alert('Subscription successful!');
-          else alert('Purchase status: ' + res.status);
-        }).catch(e=>alert('Store error: '+e));
-      } else {
-        alert('To test Store purchase, install packaged app. (This is a demo fallback.)');
-      }
+      // in packaged app use Store API; here just show message
+      alert('Subscribe flow: after packaging, this will open Microsoft Store purchase dialog.');
     });
 
-    // when leaving page, release urls
+    // init UI
+    updateTrialsUI();
+
+    // cleanup on exit
     window.addEventListener('beforeunload', ()=>{
       if (uploadedBlobUrl) URL.revokeObjectURL(uploadedBlobUrl);
-      // don't revoke processedBlobUrl if same as uploaded (handled)
     });
   </script>
 </body>
