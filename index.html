@@ -339,7 +339,7 @@
         fd.append('image', uploadedFile, uploadedFile.name);
 
         // Local backend call
-        const res = await fetch('http://localhost:3000/api/remove', {
+        const res = await fetch('https://magiccutbg-server.onrender.com/api/remove', {
           method: 'POST',
           body: fd
         });
