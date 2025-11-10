@@ -1,4 +1,3 @@
-
 <!doctype html>
 <html lang="en">
 <head>
@@ -7,37 +6,52 @@
   <title>MagicCutBG</title>
   <link rel="manifest" href="/manifest.json" />
   <style>
-    /* Simple styles to match your design screenshot */
     :root{
-      --panel-bg:#fff;
-      --accent:#6a5cff;
-      --muted:#f1f1f6;
-      --green:#35c57a;
-      --yellow:#ffc94d;
-      --purple:#9b6bff;
-      --radius:12px;
-      --shadow:0 6px 18px rgba(0,0,0,0.06);
+      --bg:#faf8ff;
+      --card:#ffffff;
+      --accent1:#7a5bff; /* purple */
+      --accent2:#8bd1ff; /* blue */
+      --accent3:#ffb86b; /* yellow */
+      --green:#2ecc71;
+      --muted:#f3f4fb;
+      --radius:14px;
     }
-    html,body{height:100%;margin:0;font-family:Inter,Segoe UI,Arial,sans-serif;background:#fafafa;color:#111}
-    .app{display:flex;height:100vh;gap:18px;padding:18px;box-sizing:border-box}
-    .left{width:360px;background:var(--panel-bg);border-radius:12px;padding:18px;box-shadow:var(--shadow);display:flex;flex-direction:column;gap:12px}
-    .brand{text-align:center}
-    .brand h1{margin:6px 0;color:var(--purple);font-size:28px}
-    .upload{border:2px dashed #e6e6ef;border-radius:10px;padding:22px;text-align:center;background:var(--muted);cursor:pointer;min-height:160px;display:flex;align-items:center;justify-content:center}
+    *{box-sizing:border-box}
+    body{margin:0;font-family:Inter,Segoe UI,Arial,sans-serif;background:linear-gradient(180deg,var(--bg),#fff);color:#111}
+    .app{display:flex;gap:18px;padding:22px;height:100vh}
+    .left{width:370px;background:var(--card);border-radius:var(--radius);padding:20px;box-shadow:0 10px 30px rgba(30,20,80,0.06);display:flex;flex-direction:column}
+    .right{flex:1;background:var(--card);border-radius:var(--radius);padding:20px;box-shadow:0 10px 30px rgba(30,20,80,0.04);display:flex;flex-direction:column;align-items:center;justify-content:center}
+    .brand{text-align:center;margin-bottom:6px}
+    .brand h1{font-size:40px;margin:6px 0;line-height:1;color:transparent;
+      background:linear-gradient(90deg,#ff8bd1,#9b6bff,#6aa3ff);-webkit-background-clip:text;background-clip:text;font-weight:800;text-shadow:0 6px 18px rgba(155,107,255,0.12)}
+    .brand p{margin:0;color:#666}
+    /* upload box */
+    .upload{border-radius:12px;border:2px dashed #e9e6f6;padding:18px;min-height:200px;background:linear-gradient(180deg,#fff,#fbfbff);display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden}
+    .upload.hover{border-color:var(--accent1)}
+    .upload img{max-width:100%;max-height:170px;border-radius:10px;object-fit:contain;display:block}
+    .upload .placeholder{text-align:center;color:#9aa0b3;font-size:14px}
     .upload input{display:none}
-    .btn{display:inline-block;padding:10px 16px;border-radius:999px;border:none;cursor:pointer;font-weight:600}
-    .btn-primary{background:linear-gradient(90deg,var(--accent),#6aa3ff);color:#fff}
-    .btn-sub{background:linear-gradient(90deg,var(--yellow),#f2b53c);color:#000}
-    .btn-green{background:linear-gradient(90deg,var(--green),#27b36f);color:#fff}
-    .controls{display:flex;gap:8px;align-items:center}
-    .field{display:flex;flex-direction:column;gap:6px}
-    select,input{padding:8px;border-radius:8px;border:1px solid #e6e6ef}
-    .download{background:#00b894;color:#fff;border-radius:999px;padding:10px;text-align:center}
-    .footer{font-size:12px;color:#666;margin-top:auto}
-    .right{flex:1;background:#fff;border-radius:12px;padding:18px;box-shadow:var(--shadow);display:flex;align-items:center;justify-content:center;color:#999}
-    .preview-img{max-width:100%;max-height:60vh;border-radius:8px;box-shadow:0 8px 20px rgba(0,0,0,0.06)}
-    .status{font-size:14px;color:#444}
-    .subscribe-row{display:flex;gap:8px;align-items:center;margin-top:8px}
+    /* shiny 3D buttons */
+    .btn{display:inline-block;padding:12px 18px;border-radius:999px;border:none;cursor:pointer;font-weight:700;position:relative;overflow:hidden;box-shadow:0 8px 20px rgba(30,20,80,0.08);transition:transform .18s ease,box-shadow .18s ease}
+    .btn:active{transform:translateY(1px)}
+    .btn:before{content:'';position:absolute;left:-40%;top:-60%;width:80%;height:200%;transform:rotate(25deg);opacity:0.25;background:linear-gradient(90deg,rgba(255,255,255,0.9),rgba(255,255,255,0.1));transition:all .6s ease}
+    .btn:hover:before{left:120%;opacity:0.6}
+    .btn-primary{background:linear-gradient(90deg,var(--accent1),#6aa3ff);color:#fff}
+    .btn-sub{background:linear-gradient(90deg,#ffd36b,#ffc94d);color:#111;box-shadow:0 10px 30px rgba(255,184,90,0.18)}
+    .btn-green{background:linear-gradient(90deg,#34d399,#2bb673);color:#fff}
+    .download{display:block;text-align:center;padding:10px;border-radius:999px;background:linear-gradient(90deg,#35d0a2,#27b36f);color:#fff;font-weight:800;margin-top:10px}
+    .controls{display:flex;gap:10px;margin-top:12px}
+    .field{flex:1}
+    select,input{padding:10px;border-radius:10px;border:1px solid #e9e6f6;width:100%}
+    .subscribe-row{display:flex;gap:8px;align-items:center;margin-top:12px}
+    .footer{font-size:13px;color:#666;margin-top:auto;display:flex;flex-direction:column;gap:6px}
+    .status-pill{background:#000;color:#fff;padding:10px;border-radius:12px;width:100%;text-align:left;box-shadow:0 6px 18px rgba(0,0,0,0.12)}
+    /* right preview area */
+    .result-wrap{width:100%;height:100%;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:12px}
+    .result-wrap .note{color:#999}
+    .result-img{max-width:95%;max-height:78vh;border-radius:12px;box-shadow:0 20px 40px rgba(30,20,80,0.06);object-fit:contain;display:none}
+    /* small tweaks */
+    a.privacy{color:#666;text-decoration:underline}
   </style>
 </head>
 <body>
@@ -45,21 +59,23 @@
     <div class="left">
       <div class="brand">
         <h1>MagicCutBG</h1>
-        <div style="font-size:13px;color:#666">Remove backgrounds in 1 click.</div>
+        <p>Remove backgrounds in 1 click.</p>
       </div>
 
-      <label class="upload" id="dropArea">
+      <label class="upload" id="dropArea" title="Click or drop image">
         <input id="fileInput" type="file" accept="image/*" />
-        <div>
-          <div style="font-weight:600;color:#666">Click here to choose image</div>
-          <div style="font-size:12px;color:#999">or drag & drop (JPG/PNG up to 15 MB)</div>
+        <div id="uploadContent">
+          <div class="placeholder">
+            <div style="font-weight:700;color:#666">Click here to choose image</div>
+            <div style="font-size:12px;color:#9aa0b3">or drag & drop (JPG/PNG up to 15 MB)</div>
+          </div>
         </div>
       </label>
 
-      <button id="uploadBtn" class="btn btn-primary">Upload Image</button>
+      <button id="uploadBtn" class="btn btn-primary" style="margin-top:12px">Upload Image</button>
 
       <div class="controls">
-        <div class="field" style="flex:1">
+        <div class="field">
           <label style="font-size:12px;color:#777">Format</label>
           <select id="format">
             <option>PNG (transparent)</option>
@@ -76,99 +92,133 @@
         </div>
       </div>
 
-      <div style="display:flex;gap:8px;margin-top:8px">
+      <div style="display:flex;gap:10px;margin-top:12px">
         <button id="removeBtn" class="btn btn-green" style="flex:1">Remove Background</button>
         <button id="subscribeBtn" class="btn btn-sub">★ Subscribe</button>
       </div>
 
-      <div style="margin-top:12px">
-        <button id="downloadBtn" class="download" disabled>Download</button>
-      </div>
+      <button id="downloadBtn" class="download" disabled>Download</button>
 
       <div class="footer">
-        <div style="height:10px"></div>
-        <div style="background:#000;color:#fff;padding:8px;border-radius:8px;display:inline-block">Your Plan: Free</div>
-        <div style="margin-top:8px"><a href="#" target="_blank">Privacy Policy: Read</a></div>
+        <div style="display:flex;gap:8px;align-items:center">
+          <div style="width:18px;height:18px;border-radius:6px;background:#000"></div>
+          <div style="font-weight:700">Your Plan: Free</div>
+        </div>
+        <div class="status-pill" id="status">Status: Idle</div>
+        <div><a class="privacy" href="https://github.com/zeeali2600-ship-it/magiccutbg-site" target="_blank">Privacy Policy: Read</a></div>
       </div>
     </div>
 
-    <div class="right" id="resultArea">
-      <div>
-        <div class="status">Result will appear here after background removal.</div>
-        <img id="preview" class="preview-img" style="display:none" src="" alt="preview"/>
+    <div class="right">
+      <div class="result-wrap">
+        <div class="note">Result will appear here after background removal.</div>
+        <img id="resultPreview" class="result-img" src="" alt="result" />
       </div>
     </div>
   </div>
 
   <script>
-    // Register service worker
+    // service worker registration (optional already present)
     if ('serviceWorker' in navigator) {
       navigator.serviceWorker.register('/service-worker.js').catch(()=>{/* ignore */});
     }
 
-    // Basic UI logic (placeholder functionality)
+    // Elements
     const fileInput = document.getElementById('fileInput');
     const dropArea = document.getElementById('dropArea');
+    const uploadContent = document.getElementById('uploadContent');
     const uploadBtn = document.getElementById('uploadBtn');
     const removeBtn = document.getElementById('removeBtn');
-    const preview = document.getElementById('preview');
-    const resultArea = document.getElementById('resultArea');
+    const resultPreview = document.getElementById('resultPreview');
     const downloadBtn = document.getElementById('downloadBtn');
+    const statusEl = document.getElementById('status');
     const subscribeBtn = document.getElementById('subscribeBtn');
 
+    let uploadedBlobUrl = null;
+    let processedBlobUrl = null;
+
+    // UI helpers
+    function setStatus(text){ statusEl.textContent = 'Status: ' + text; }
+    function showUploadImage(url){
+      uploadContent.innerHTML = '';
+      const img = document.createElement('img');
+      img.src = url;
+      img.alt = 'uploaded';
+      img.style.maxHeight = '170px';
+      uploadContent.appendChild(img);
+    }
+
+    function clearResult(){
+      resultPreview.style.display = 'none';
+      resultPreview.src = '';
+    }
+
+    // File selection
     dropArea.addEventListener('click', ()=> fileInput.click());
     uploadBtn.addEventListener('click', ()=> fileInput.click());
 
-    dropArea.addEventListener('dragover', e=>{ e.preventDefault(); dropArea.style.borderColor='#bfc7ff'; });
-    dropArea.addEventListener('dragleave', e=>{ e.preventDefault(); dropArea.style.borderColor='#e6e6ef'; });
-    dropArea.addEventListener('drop', e=>{ e.preventDefault(); dropArea.style.borderColor='#e6e6ef'; if(e.dataTransfer.files.length) handleFile(e.dataTransfer.files[0]); });
+    dropArea.addEventListener('dragover', e=>{ e.preventDefault(); dropArea.classList.add('hover'); });
+    dropArea.addEventListener('dragleave', e=>{ e.preventDefault(); dropArea.classList.remove('hover'); });
+    dropArea.addEventListener('drop', e=>{ e.preventDefault(); dropArea.classList.remove('hover'); if(e.dataTransfer.files.length) handleFile(e.dataTransfer.files[0]); });
 
     fileInput.addEventListener('change', e => { if(e.target.files[0]) handleFile(e.target.files[0]); });
 
     function handleFile(file){
       if(!file.type.startsWith('image/')) { alert('Please select an image'); return; }
-      const url = URL.createObjectURL(file);
-      preview.src = url; preview.style.display='block';
-      resultArea.querySelector('.status').style.display='none';
-      downloadBtn.disabled = false;
-      // store blob for download (placeholder)
-      preview.dataset.blobUrl = url;
+      if (uploadedBlobUrl) URL.revokeObjectURL(uploadedBlobUrl);
+      uploadedBlobUrl = URL.createObjectURL(file);
+      showUploadImage(uploadedBlobUrl);
+      clearResult();
+      downloadBtn.disabled = true;
+      setStatus('Image ready');
     }
 
-    // Placeholder remove background action (for demo)
-    removeBtn.addEventListener('click', async ()=> {
-      if(!preview.src){ alert('Please upload an image first.'); return; }
-      removeBtn.textContent = 'Processing...'; removeBtn.disabled = true;
-      // Simulate network/background removal
-      await new Promise(r=>setTimeout(r,1500));
-      // For demo we just show same image as "result"
-      resultArea.querySelector('.status').style.display='none';
-      preview.style.display='block';
-      removeBtn.textContent = 'Remove Background'; removeBtn.disabled = false;
-      alert('Background removal simulated (demo). For real removal integrate API on server.');
+    // Simulate background removal - this is where you'd call your secure backend API
+    removeBtn.addEventListener('click', async ()=>{
+      if(!uploadedBlobUrl){ alert('Please upload an image first.'); return; }
+      setStatus('Processing...');
+      removeBtn.disabled = true;
+      // simulate network delay
+      await new Promise(r=>setTimeout(r,1800));
+
+      // For demo we just reuse uploaded image as "processed result".
+      if (processedBlobUrl) URL.revokeObjectURL(processedBlobUrl);
+      processedBlobUrl = uploadedBlobUrl; // in real app, replace with server response blob url
+      resultPreview.src = processedBlobUrl;
+      resultPreview.style.display = 'block';
+      downloadBtn.disabled = false;
+      setStatus('Done');
+      removeBtn.disabled = false;
     });
 
-    // Download demo image
-    downloadBtn.addEventListener('click', ()=> {
+    // Download result
+    downloadBtn.addEventListener('click', ()=>{
+      if(!resultPreview.src) return;
       const a = document.createElement('a');
-      a.href = preview.dataset.blobUrl || preview.src;
-      a.download = 'result.png';
+      a.href = resultPreview.src;
+      a.download = 'magiccutbg-result.png';
       a.click();
     });
 
-    // Subscribe button: if running as packaged app (Store), call Store API. Else fallback to info.
-    subscribeBtn.addEventListener('click', async ()=>{
+    // Subscribe behaviour (demo)
+    subscribeBtn.addEventListener('click', ()=>{
       if (window.Windows && Windows.Services && Windows.Services.Store) {
-        try {
-          const storeContext = Windows.Services.Store.StoreContext.getDefault();
-          const productId = "YOUR_PRODUCT_ID"; // replace with Partner Center product ID
-          const res = await storeContext.requestPurchaseAsync(productId);
+        // packaged app flow (leave placeholder)
+        const storeContext = Windows.Services.Store.StoreContext.getDefault();
+        const productId = "YOUR_PRODUCT_ID";
+        storeContext.requestPurchaseAsync(productId).then(res=>{
           if(res.status === Windows.Services.Store.StorePurchaseStatus.succeeded) alert('Subscription successful!');
           else alert('Purchase status: ' + res.status);
-        } catch(e){ alert('Store purchase failed: '+e.message); }
+        }).catch(e=>alert('Store error: '+e));
       } else {
-        alert('Subscribe (demo): To test native Store purchase, install the packaged app from Store / sideloaded package.');
+        alert('To test Store purchase, install packaged app. (This is a demo fallback.)');
       }
+    });
+
+    // when leaving page, release urls
+    window.addEventListener('beforeunload', ()=>{
+      if (uploadedBlobUrl) URL.revokeObjectURL(uploadedBlobUrl);
+      // don't revoke processedBlobUrl if same as uploaded (handled)
     });
   </script>
 </body>
