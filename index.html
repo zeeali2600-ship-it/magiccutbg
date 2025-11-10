@@ -6,289 +6,254 @@
   <title>MagicCutBG</title>
   <link rel="manifest" href="/manifest.json" />
   <style>
-    /* Colors / theme */
     :root{
       --bg:#fbf8ff;
-      --card:#ffffff;
-      --accent1:#7a5bff;
-      --accent2:#6aa3ff;
-      --accent3:#ffc94d;
-      --green1:#35d0a2;
-      --green2:#27b36f;
-      --muted:#f4f6fb;
-      --radius:18px;
-      --panel-border: rgba(120,100,180,0.08);
-      --shadow-lg: 0 18px 50px rgba(30,20,80,0.08);
-      --shadow-sm: 0 8px 24px rgba(30,20,80,0.06);
+      --panel:#ffffff;
+      --accent-purple-1:#7a5bff;
+      --accent-purple-2:#9b6bff;
+      --accent-blue:#6aa3ff;
+      --accent-yellow:#ffd36b;
+      --accent-green1:#35d0a2;
+      --accent-green2:#27b36f;
+      --muted:#f6f5fb;
+      --outline: rgba(140,120,180,0.12);
+      --radius:22px;
+      --inner-radius:14px;
+      --shadow-strong: 0 22px 60px rgba(30,20,80,0.08);
+      --shadow-soft: 0 10px 28px rgba(30,20,80,0.06);
     }
 
     *{box-sizing:border-box}
     body{
       margin:0;
-      font-family: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
-      background: linear-gradient(180deg,var(--bg),#fff);
+      font-family: Inter, "Segoe UI", Roboto, Arial, sans-serif;
+      background:linear-gradient(180deg,var(--bg),#ffffff);
       color:#111;
       -webkit-font-smoothing:antialiased;
-      -moz-osx-font-smoothing:grayscale;
     }
 
-    /* App layout */
+    /* layout */
     .app{display:flex;gap:28px;padding:28px;height:100vh;align-items:flex-start}
+    .col-left{width:460px}
     .card{
-      background:var(--card);
-      border-radius:22px;
-      padding:18px;
-      box-shadow:var(--shadow-lg);
+      background:var(--panel);
+      border-radius:26px;
+      padding:22px;
+      box-shadow:var(--shadow-strong);
       border:1px solid rgba(0,0,0,0.02);
     }
-
-    .left{width:420px}
-    .right{flex:1;display:flex;align-items:center;justify-content:center}
-
-    /* brand */
-    .brand{text-align:center;margin-bottom:12px}
-    .brand h1{
-      font-size:48px;
-      margin:6px 0 6px 0;
-      line-height:1;
-      color:transparent;
-      background:linear-gradient(90deg,#ff8bd1,#9b6bff,#6aa3ff);
-      -webkit-background-clip:text;background-clip:text;
-      font-weight:900;
-      letter-spacing:0.6px;
-      text-shadow:0 12px 30px rgba(155,107,255,0.08)
-    }
-    .brand p{margin:0;color:#666;font-size:14px}
-
-    /* inner panel look (like example: soft outline + rounded inner box) */
-    .inner-panel{
-      background: linear-gradient(180deg,#fff,#fbfbff);
-      border-radius:16px;
-      padding:20px;
-      box-shadow: 0 8px 30px rgba(120,100,180,0.03);
-      border: 1px solid var(--panel-border);
-    }
-
-    /* upload area - dashed inner outline */
-    .upload{
-      border-radius:14px;
+    .right-card{
+      flex:1;
+      border-radius:26px;
       padding:22px;
-      min-height:280px;
+      box-shadow:var(--shadow-soft);
+      border:1px solid rgba(0,0,0,0.03);
       display:flex;
       align-items:center;
       justify-content:center;
-      background:linear-gradient(180deg, rgba(120,100,180,0.015), rgba(120,100,180,0.01));
+      background:linear-gradient(180deg,#fff,#fbfbff);
+    }
+
+    /* title (Textura-like style but using app name) */
+    .brand{text-align:center;margin-bottom:12px}
+    .brand h1{
+      font-size:58px;
+      margin:4px 0;
+      line-height:0.95;
+      font-weight:900;
+      color:transparent;
+      background:linear-gradient(90deg,#9b6bff,#7a5bff,#6aa3ff);
+      -webkit-background-clip:text;
+      background-clip:text;
+      letter-spacing:1px;
+      text-shadow:0 18px 36px rgba(155,107,255,0.06);
+    }
+    .brand p{margin:6px 0 0 0;color:#6f6f7a;font-size:14px}
+
+    /* inner panel with soft border and big rounded inner box (matches screenshot) */
+    .inner{
+      background: linear-gradient(180deg,#fff,#fbfbff);
+      border-radius:18px;
+      padding:18px;
+      margin-top:6px;
+      border:1px solid var(--outline);
+      box-shadow: 0 8px 28px rgba(120,100,180,0.03);
+    }
+
+    /* upload box with dotted inner outline */
+    .upload{
       position:relative;
+      border-radius:14px;
+      padding:18px;
+      min-height:220px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      background: #fff;
+      overflow:hidden;
     }
     .upload::after{
-      /* dotted inner outline like sample */
       content:'';
       position:absolute;
-      inset:14px;
+      inset:12px;
       border-radius:12px;
       border:2px dashed rgba(120,100,180,0.12);
       pointer-events:none;
     }
     .upload input{display:none}
-    .upload .placeholder{z-index:2;text-align:center;color:#8f95a8}
-    .upload img{max-width:100%;max-height:240px;border-radius:12px;object-fit:contain;display:block;z-index:2}
+    .upload .placeholder{color:#9aa0b3;text-align:center;font-size:15px;z-index:2}
+    .upload img{max-width:100%;max-height:220px;border-radius:12px;object-fit:contain;z-index:2}
 
-    /* buttons - keep your button shapes but matching sample look */
+    /* button base to match screenshot shapes */
     .btn{
       display:inline-block;
-      padding:12px 26px;
+      padding:12px 28px;
       border-radius:14px;
+      font-weight:800;
       border:none;
       cursor:pointer;
-      font-weight:800;
       position:relative;
       overflow:hidden;
-      transition: transform .14s ease, box-shadow .14s ease;
-      font-size:15px;
+      transition:transform .12s ease, box-shadow .12s ease;
+      box-shadow: 0 12px 30px rgba(60,40,120,0.08);
       color:#fff;
-      box-shadow: 0 12px 34px rgba(100,80,200,0.08);
-      min-width:140px;
+      font-size:15px;
+      min-width:160px;
       text-align:center;
     }
     .btn:active{transform:translateY(1px)}
-    .btn:before{content:'';position:absolute;left:-40%;top:-55%;width:90%;height:220%;transform:rotate(25deg);opacity:0.22;background:linear-gradient(90deg,rgba(255,255,255,0.95),rgba(255,255,255,0.12));transition:all .6s ease}
+    .btn:before{content:'';position:absolute;left:-40%;top:-60%;width:90%;height:220%;transform:rotate(25deg);opacity:0.22;background:linear-gradient(90deg,rgba(255,255,255,0.95),rgba(255,255,255,0.12));transition:all .6s ease}
     .btn:hover:before{left:120%;opacity:0.6}
 
-    .btn-upload{
-      background: linear-gradient(90deg,var(--accent1),var(--accent2));
-      box-shadow: 0 18px 42px rgba(106,99,255,0.12);
-    }
+    .btn-generate{ background: linear-gradient(90deg,#7a5bff,#9b6bff); color:#fff; box-shadow:0 14px 36px rgba(122,91,255,0.14); border-radius:18px; }
+    .btn-subscribe{ background: linear-gradient(90deg,#ffd36b,#ffcc57); color:#111; box-shadow:0 14px 36px rgba(255,184,90,0.12); border-radius:18px; min-width:160px; }
+    .btn-download{ background: linear-gradient(90deg,#35d0a2,#27b36f); color:#fff; padding:12px 42px; border-radius:18px; box-shadow:0 16px 40px rgba(40,160,120,0.12); display:block; margin:18px auto 0 auto; min-width:220px; }
+    .btn-stop{ background: linear-gradient(90deg,#c7f0d8,#8fe1bd); color:#065; padding:10px 20px; border-radius:14px; box-shadow:0 10px 28px rgba(100,200,160,0.08); min-width:120px; }
 
-    .btn-remove{
-      background: linear-gradient(90deg,#7fa3ff,#9fd0ff);
-      color:#fff;
-      box-shadow: 0 12px 36px rgba(120,120,255,0.08);
-      min-width:180px;
-    }
-
-    .btn-subscribe{
-      background: linear-gradient(90deg,var(--accent3),#ffcd5a);
-      color:#111;
-      box-shadow: 0 12px 36px rgba(255,184,90,0.12);
-      min-width:120px;
-    }
-
-    .btn-download{
-      background: linear-gradient(90deg,var(--green1),var(--green2));
-      color:#fff;
-      padding:12px 32px;
-      border-radius:16px;
-      box-shadow: 0 14px 38px rgba(40,170,120,0.10);
-      font-weight:900;
-      min-width:200px;
-      display:block;
-      margin:18px auto 0 auto;
-    }
-
-    /* controls: select boxes (nice rounded boxes) */
+    /* controls */
     .controls{display:flex;gap:12px;margin-top:14px;align-items:center}
     .field{flex:1}
-    select,input{
-      padding:12px 12px;
-      border-radius:12px;
-      border:1px solid rgba(120,100,180,0.06);
-      background:#fff;
-      width:100%;
-      font-size:14px;
+    select, input[type="text"]{
+      padding:12px 12px;border-radius:12px;border:1px solid rgba(120,100,180,0.06);background:#fff;width:100%;font-size:14px;
     }
 
-    /* actions layout */
-    .actions-row{display:flex;gap:18px;margin-top:18px;align-items:center}
-    .actions-left{flex:1} /* keep remove button left and wide */
-    .actions-right{flex:0}
+    /* arrange buttons like screenshot: generate left, subscribe right, download center */
+    .buttons-row{display:flex;gap:18px;margin-top:18px;align-items:center}
+    .buttons-left{flex:1}
+    .buttons-right{flex:0}
+    .download-wrap{text-align:center}
 
-    /* footer: plan + trials + status */
-    .footer{margin-top:20px;display:flex;flex-direction:column;gap:12px}
-    .plan-row{display:flex;align-items:center;gap:12px}
-    .plan-dot{width:16px;height:16px;border-radius:5px;background:#000}
-    .plan-text{font-weight:700}
+    /* trials area - oval + progress + stop on right */
+    .trials-row{display:flex;align-items:center;gap:12px;margin-top:18px}
+    .trials-oval{background:rgba(122,91,255,0.08);padding:10px 14px;border-radius:999px;color:var(--accent-purple-1);font-weight:800;box-shadow:0 8px 20px rgba(122,91,255,0.05);font-size:13px;display:inline-flex;align-items:center;gap:8px;min-width:88px;justify-content:center}
+    .trials-bar-wrap{flex:1;height:12px;background:#f1f1f6;border-radius:999px;overflow:hidden;border:1px solid rgba(0,0,0,0.03)}
+    .trials-bar{height:100%;background:linear-gradient(90deg,#2ecc71,#27b36f);width:100%;transition:width .3s ease}
 
-    /* trials - oval + progress bar */
-    .trials-wrap{display:flex;align-items:center;gap:14px;margin-left:auto}
-    .trials-oval{
-      background: rgba(122,91,255,0.08);
-      padding:8px 14px;border-radius:999px;font-weight:800;color:var(--accent1);
-      box-shadow:0 8px 20px rgba(122,91,255,0.05);
-      font-size:13px;
-    }
-    .trials-progress-wrap{width:160px;height:12px;background:#f1f1f6;border-radius:999px;overflow:hidden;border:1px solid rgba(0,0,0,0.03)}
-    .trials-progress{height:100%;background:linear-gradient(90deg,#2ecc71,#27b36f);width:100%;transition:width .3s ease}
+    /* status pill */
+    .status-pill{margin-top:14px;background:#0b0b0b;color:#fff;padding:12px;border-radius:12px;font-weight:700;box-shadow:0 10px 28px rgba(0,0,0,0.12)}
 
-    .status-pill{background:#0b0b0b;color:#fff;padding:12px;border-radius:12px;width:100%;box-shadow:0 10px 30px rgba(0,0,0,0.12);font-weight:700}
-
-    /* right result area: inner framed panel like sample */
+    /* result frame on right: large framed area like screenshot */
     .result-frame{
       width:100%;
-      height:calc(100vh - 64px);
-      border-radius:22px;
+      height:calc(100vh - 56px);
+      border-radius:26px;
       padding:18px;
       background:linear-gradient(180deg,#fff,#fbfbff);
-      box-shadow:var(--shadow-sm);
-      border:1px solid var(--panel-border);
+      box-shadow:var(--shadow-soft);
+      border:1px solid var(--outline);
       display:flex;
       align-items:center;
       justify-content:center;
     }
     .result-inner{
-      width:92%;
-      height:92%;
-      border-radius:18px;
-      padding:12px;
+      width:94%;
+      height:94%;
+      border-radius:16px;
       border:1px solid rgba(120,100,180,0.06);
       display:flex;
       align-items:center;
       justify-content:center;
-      background: #fff;
+      background:#fff;
     }
     .result-note{color:#9aa0b3;font-size:16px;text-align:center}
-    .result-img{max-width:100%;max-height:100%;border-radius:6px;object-fit:contain;display:none;box-shadow:0 20px 40px rgba(30,20,80,0.06)}
+    .result-img{max-width:100%;max-height:100%;object-fit:contain;border-radius:6px;display:none;box-shadow:0 20px 40px rgba(30,20,80,0.06)}
 
-    /* small screens */
+    /* responsive */
     @media (max-width:980px){
       .app{flex-direction:column;padding:18px;height:auto}
-      .left{width:100%}
-      .right{width:100%}
-      .brand h1{font-size:40px}
-      .result-frame{height:400px}
+      .col-left{width:100%}
+      .result-frame{height:420px}
+      .brand h1{font-size:44px}
     }
   </style>
 </head>
 <body>
   <div class="app">
-    <div class="left card">
-      <div class="brand">
-        <h1>MagicCutBG</h1>
-        <p>Remove backgrounds in 1 click.</p>
-      </div>
-
-      <div class="inner-panel">
-        <label class="upload" id="dropArea" title="Click or drop image">
-          <input id="fileInput" type="file" accept="image/*" />
-          <div id="uploadContent" class="placeholder">
-            <div style="font-weight:700;color:#666">Click here to choose image</div>
-            <div style="font-size:13px;color:#9aa0b3;margin-top:6px">or drag & drop (JPG/PNG up to 5 MB)</div>
-          </div>
-        </label>
-
-        <div style="display:flex;justify-content:center;margin-top:18px">
-          <button id="uploadBtn" class="btn btn-upload">Upload Image</button>
+    <div class="col-left">
+      <div class="card">
+        <div class="brand">
+          <h1>MagicCutBG</h1>
+          <p>Remove backgrounds in 1 click.</p>
         </div>
 
-        <div class="controls">
-          <div class="field">
-            <label style="font-size:12px;color:#777">Format</label>
-            <select id="format">
-              <option>PNG (transparent)</option>
-              <option>JPEG</option>
-            </select>
-          </div>
-          <div class="field" style="width:140px">
-            <label style="font-size:12px;color:#777">Size</label>
-            <select id="size">
-              <option>Auto</option>
-              <option>512x512</option>
-              <option>1024x1024</option>
-            </select>
-          </div>
-        </div>
-
-        <div class="actions-row">
-          <div class="actions-left">
-            <button id="removeBtn" class="btn btn-remove">Remove Background</button>
-          </div>
-          <div class="actions-right">
-            <button id="subscribeBtn" class="btn btn-subscribe">★ Subscribe</button>
-          </div>
-        </div>
-
-        <button id="downloadBtn" class="btn-download" disabled>Download</button>
-
-        <div class="footer">
-          <div style="display:flex;align-items:center;gap:12px">
-            <div style="display:flex;align-items:center;gap:10px">
-              <div class="plan-dot"></div>
-              <div class="plan-text">Your Plan: <strong>Free</strong></div>
+        <div class="inner">
+          <label class="upload" id="dropArea" title="Click or drop image">
+            <input id="fileInput" type="file" accept="image/*" />
+            <div id="uploadContent" class="placeholder">
+              <div style="font-weight:700;color:#666">Click here to choose image</div>
+              <div style="font-size:13px;color:#9aa0b3;margin-top:8px">or drag & drop (JPG/PNG up to 5 MB)</div>
             </div>
+          </label>
 
-            <div style="margin-left:auto;display:flex;align-items:center;gap:12px">
-              <div class="trials-oval">Trials: <span id="trialsCount">3</span></div>
-              <div class="trials-progress-wrap"><div id="trialsProgress" class="trials-progress" style="width:100%"></div></div>
+          <div style="display:flex;justify-content:center;margin-top:18px">
+            <button id="uploadBtn" class="btn btn-generate">Upload Image</button>
+          </div>
+
+          <div class="controls">
+            <div class="field">
+              <label style="font-size:12px;color:#777">Format</label>
+              <select id="format">
+                <option>PNG (transparent)</option>
+                <option>JPEG</option>
+              </select>
             </div>
+            <div class="field" style="width:140px">
+              <label style="font-size:12px;color:#777">Size</label>
+              <select id="size">
+                <option>Auto</option>
+                <option>512x512</option>
+                <option>1024x1024</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="buttons-row">
+            <div class="buttons-left">
+              <button id="removeBtn" class="btn btn-generate btn-generate" style="min-width:220px">Remove Background</button>
+            </div>
+            <div class="buttons-right">
+              <button id="subscribeBtn" class="btn btn-subscribe">★ Subscribe Pro</button>
+            </div>
+          </div>
+
+          <div class="download-wrap">
+            <button id="downloadBtn" class="btn-download" disabled>Download</button>
+          </div>
+
+          <div class="trials-row">
+            <div class="trials-oval">Trials: <span id="trialsCount">3</span></div>
+            <div class="trials-bar-wrap"><div id="trialsBar" class="trials-bar" style="width:100%"></div></div>
+            <div style="margin-left:12px"><button id="stopBtn" class="btn-stop">Stop</button></div>
           </div>
 
           <div class="status-pill" id="status">Status: Idle</div>
-          <div style="margin-top:8px"><a class="privacy" href="privacy.html" target="_blank" rel="noopener">Privacy Policy: Read</a></div>
+          <div style="margin-top:12px;text-align:center"><a class="privacy" href="privacy.html" target="_blank" rel="noopener" style="color:#6f6f7a;text-decoration:underline">Privacy Policy: Read</a></div>
         </div>
       </div>
     </div>
 
     <div class="right">
-      <div class="result-frame card">
+      <div class="result-frame">
         <div class="result-inner">
           <div id="resultNote" class="result-note">Result will appear here after background removal.</div>
           <img id="resultPreview" class="result-img" src="" alt="result"/>
@@ -298,7 +263,7 @@
   </div>
 
   <script>
-    // service worker (safe ignore)
+    // register service worker if available
     if ('serviceWorker' in navigator) {
       navigator.serviceWorker.register('/service-worker.js').catch(()=>{/* ignore */});
     }
@@ -315,27 +280,27 @@
     const resultNote = document.getElementById('resultNote');
     const statusEl = document.getElementById('status');
     const trialsCountEl = document.getElementById('trialsCount');
-    const trialsProgress = document.getElementById('trialsProgress');
+    const trialsBar = document.getElementById('trialsBar');
+    const stopBtn = document.getElementById('stopBtn');
 
-    // single-click behavior: label handles file dialog; uploadBtn triggers it too (only one)
+    // single-click: label handles file dialog; upload button triggers too (only one)
     uploadBtn.addEventListener('click', ()=> fileInput.click());
 
     // drag/drop
-    dropArea.addEventListener('dragover', e=>{ e.preventDefault(); dropArea.classList.add('hover'); });
-    dropArea.addEventListener('dragleave', e=>{ e.preventDefault(); dropArea.classList.remove('hover'); });
-    dropArea.addEventListener('drop', e=>{ e.preventDefault(); dropArea.classList.remove('hover'); if(e.dataTransfer.files.length) handleFile(e.dataTransfer.files[0]); });
-    fileInput.addEventListener('change', e => { if(e.target.files[0]) handleFile(e.target.files[0]); });
+    dropArea.addEventListener('dragover', e => { e.preventDefault(); dropArea.classList.add('hover'); });
+    dropArea.addEventListener('dragleave', e => { e.preventDefault(); dropArea.classList.remove('hover'); });
+    dropArea.addEventListener('drop', e => { e.preventDefault(); dropArea.classList.remove('hover'); if (e.dataTransfer.files.length) handleFile(e.dataTransfer.files[0]); });
+    fileInput.addEventListener('change', e => { if (e.target.files[0]) handleFile(e.target.files[0]); });
 
     let uploadedBlobUrl = null;
     let processedBlobUrl = null;
     let trials = 3;
-
     function setStatus(text){ statusEl.textContent = 'Status: ' + text; }
     function updateTrialsUI(){
       trialsCountEl.textContent = trials;
       const pct = Math.round((trials / 3) * 100);
-      trialsProgress.style.width = pct + '%';
-      if(trials <= 0){
+      trialsBar.style.width = pct + '%';
+      if (trials <= 0) {
         removeBtn.disabled = true;
         removeBtn.style.opacity = '0.6';
         subscribeBtn.classList.add('subscribe-pulse');
@@ -362,7 +327,7 @@
     }
 
     function handleFile(file){
-      if(!file.type.startsWith('image/')) { alert('Please select an image'); return; }
+      if (!file.type.startsWith('image/')) { alert('Please select an image'); return; }
       const maxBytes = 5 * 1024 * 1024; // 5 MB
       if (file.size > maxBytes) { alert('File too large. Maximum 5 MB allowed.'); return; }
       if (uploadedBlobUrl) URL.revokeObjectURL(uploadedBlobUrl);
@@ -373,16 +338,16 @@
       setStatus('Image ready');
     }
 
-    // remove background (demo) -> replace with server API later
-    removeBtn.addEventListener('click', async ()=>{
-      if(!uploadedBlobUrl){ alert('Please upload an image first.'); return; }
-      if(trials <= 0){ alert('No trials left. Please subscribe.'); return; }
+    // Remove background (demo) — replace with secure backend API later
+    removeBtn.addEventListener('click', async () => {
+      if (!uploadedBlobUrl) { alert('Please upload an image first.'); return; }
+      if (trials <= 0) { alert('No trials left. Please subscribe.'); return; }
       setStatus('Processing...');
       removeBtn.disabled = true;
       resultNote.style.display = 'none';
 
-      // simulate process
-      await new Promise(r=>setTimeout(r,1500));
+      // simulated processing delay (replace with fetch to backend)
+      await new Promise(r => setTimeout(r, 1500));
 
       if (processedBlobUrl && processedBlobUrl !== uploadedBlobUrl) URL.revokeObjectURL(processedBlobUrl);
       processedBlobUrl = uploadedBlobUrl;
@@ -397,24 +362,31 @@
       removeBtn.disabled = false;
     });
 
-    // download
-    downloadBtn.addEventListener('click', ()=>{
-      if(!resultPreview.src) return;
+    // Download
+    downloadBtn.addEventListener('click', () => {
+      if (!resultPreview.src) return;
       const a = document.createElement('a');
       a.href = resultPreview.src;
       a.download = 'magiccutbg-result.png';
       a.click();
     });
 
-    // subscribe demo
-    subscribeBtn.addEventListener('click', ()=> {
-      alert('Subscribe flow (demo). In production this opens store checkout.');
+    // Stop (demo)
+    stopBtn.addEventListener('click', () => {
+      setStatus('Stopped');
+      resultNote.style.display = 'block';
+      if (processedBlobUrl) { URL.revokeObjectURL(processedBlobUrl); processedBlobUrl = null; resultPreview.style.display = 'none'; }
+      downloadBtn.disabled = true;
+    });
+
+    // Subscribe (demo)
+    subscribeBtn.addEventListener('click', () => {
+      alert('Subscribe flow (demo). In production this opens Store checkout.');
     });
 
     // init
     updateTrialsUI();
-    window.addEventListener('beforeunload', ()=>{ if (uploadedBlobUrl) URL.revokeObjectURL(uploadedBlobUrl); });
-
+    window.addEventListener('beforeunload', () => { if (uploadedBlobUrl) URL.revokeObjectURL(uploadedBlobUrl); });
   </script>
 </body>
 </html>
