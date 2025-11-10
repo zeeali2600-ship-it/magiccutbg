@@ -7,78 +7,76 @@
   <link rel="manifest" href="/manifest.json" />
   <style>
     :root{
-      --bg:#faf8ff;
+      --bg:#fbf8ff;
       --card:#ffffff;
       --accent1:#7a5bff;
       --accent2:#6aa3ff;
       --accent3:#ffc94d;
-      --green:#2ecc71;
-      --muted:#f3f4fb;
+      --green:#27b36f;
+      --muted:#f4f6fb;
       --radius:14px;
+      --shadow-lg: 0 14px 40px rgba(30,20,80,0.08);
+      --shadow-sm: 0 8px 18px rgba(30,20,80,0.06);
+      --max-upload-height: 220px;
     }
     *{box-sizing:border-box}
     body{margin:0;font-family:Inter,Segoe UI,Arial,sans-serif;background:linear-gradient(180deg,var(--bg),#fff);color:#111}
-    .app{display:flex;gap:18px;padding:22px;height:100vh;align-items:flex-start}
-    .left{width:380px;background:var(--card);border-radius:var(--radius);padding:22px 20px 20px 20px;box-shadow:0 10px 30px rgba(30,20,80,0.06);display:flex;flex-direction:column}
-    .right{flex:1;background:var(--card);border-radius:var(--radius);padding:20px;box-shadow:0 10px 30px rgba(30,20,80,0.04);display:flex;flex-direction:column;align-items:center;justify-content:center}
-    .brand{text-align:center;margin-bottom:10px;padding-top:6px} /* added padding-top to avoid clipping */
-    /* make title bigger and not clipped */
+    .app{display:flex;gap:20px;padding:28px;height:100vh;align-items:flex-start}
+    .left{width:380px;background:var(--card);border-radius:var(--radius);padding:22px;box-shadow:var(--shadow-lg);display:flex;flex-direction:column}
+    .right{flex:1;background:var(--card);border-radius:var(--radius);padding:22px;box-shadow:var(--shadow-sm);display:flex;flex-direction:column;align-items:center;justify-content:center}
+    .brand{text-align:center;margin-bottom:8px;padding-top:8px}
+    /* title slightly smaller and centered */
     .brand h1{
-      font-size:52px; /* bigger */
-      margin:6px 0 4px 0;
-      line-height:1.02;
+      font-size:44px; /* slightly smaller */
+      margin:4px 0 2px 0;
+      line-height:1;
       color:transparent;
       background:linear-gradient(90deg,#ff8bd1,#9b6bff,#6aa3ff);
       -webkit-background-clip:text;background-clip:text;font-weight:900;
-      text-shadow:0 10px 30px rgba(155,107,255,0.12)
+      text-shadow:0 8px 24px rgba(155,107,255,0.10)
     }
-    .brand p{margin:0;color:#666;font-size:15px}
-    /* upload box bigger and clearer */
-    .upload{border-radius:12px;border:2px dashed #e9e6f6;padding:20px;min-height:260px;background:linear-gradient(180deg,#fff,#fbfbff);display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden}
+    .brand p{margin:0;color:#666;font-size:14px}
+    /* upload box bigger */
+    .upload{border-radius:12px;border:2px dashed #e9e6f6;padding:18px;min-height:280px;background:linear-gradient(180deg,#fff,#fbfbff);display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden}
     .upload.hover{border-color:var(--accent1)}
-    .upload img{max-width:100%;max-height:220px;border-radius:10px;object-fit:contain;display:block}
+    .upload img{max-width:100%;max-height:var(--max-upload-height);border-radius:12px;object-fit:contain;display:block}
     .upload .placeholder{text-align:center;color:#9aa0b3;font-size:14px}
     .upload input{display:none}
     /* shiny 3D buttons */
-    .btn{display:inline-block;padding:12px 18px;border-radius:999px;border:none;cursor:pointer;font-weight:700;position:relative;overflow:hidden;box-shadow:0 8px 20px rgba(30,20,80,0.08);transition:transform .18s ease,box-shadow .18s ease}
+    .btn{display:inline-block;padding:12px 18px;border-radius:999px;border:none;cursor:pointer;font-weight:700;position:relative;overflow:hidden;box-shadow:0 10px 28px rgba(30,20,80,0.06);transition:transform .14s ease,box-shadow .14s ease}
     .btn:active{transform:translateY(1px)}
-    .btn:before{content:'';position:absolute;left:-40%;top:-60%;width:80%;height:200%;transform:rotate(25deg);opacity:0.25;background:linear-gradient(90deg,rgba(255,255,255,0.9),rgba(255,255,255,0.1));transition:all .6s ease}
+    .btn:before{content:'';position:absolute;left:-40%;top:-60%;width:80%;height:200%;transform:rotate(25deg);opacity:0.25;background:linear-gradient(90deg,rgba(255,255,255,0.9),rgba(255,255,255,0.15));transition:all .6s ease}
     .btn:hover:before{left:120%;opacity:0.6}
     .btn-primary{background:linear-gradient(90deg,var(--accent1),var(--accent2));color:#fff}
-    .btn-sub{background:linear-gradient(90deg,#ffd36b,#ffc94d);color:#111;box-shadow:0 10px 30px rgba(255,184,90,0.18)}
-    .btn-green{background:linear-gradient(90deg,#34d399,#2bb673);color:#fff}
-    .download{display:block;text-align:center;padding:10px;border-radius:999px;background:linear-gradient(90deg,#35d0a2,#27b36f);color:#fff;font-weight:800;margin-top:10px}
-    .controls{display:flex;gap:10px;margin-top:12px}
+    .btn-sub{background:linear-gradient(90deg,#ffd36b,#ffc94d);color:#111;box-shadow:0 12px 38px rgba(255,184,90,0.12)}
+    .btn-green{background:linear-gradient(90deg,#34d399,#27b36f);color:#fff}
+    .download{display:block;text-align:center;padding:12px;border-radius:999px;background:linear-gradient(90deg,#35d0a2,#27b36f);color:#fff;font-weight:800;margin-top:12px}
+    .controls{display:flex;gap:12px;margin-top:12px}
     .field{flex:1}
     select,input{padding:10px;border-radius:10px;border:1px solid #e9e6f6;width:100%}
     .subscribe-row{display:flex;gap:8px;align-items:center;margin-top:12px}
-    .footer{font-size:13px;color:#666;margin-top:auto;display:flex;flex-direction:column;gap:8px}
-    .status-pill{background:#000;color:#fff;padding:10px;border-radius:12px;width:100%;text-align:left;box-shadow:0 6px 18px rgba(0,0,0,0.12)}
-    /* Trials: professional look */
-    .trials{
-      font-weight:900;
-      color:#111;
+    .footer{font-size:13px;color:#666;margin-top:auto;display:flex;flex-direction:column;gap:10px}
+    .status-pill{background:#000;color:#fff;padding:12px;border-radius:12px;width:100%;text-align:left;box-shadow:0 8px 24px rgba(0,0,0,0.12)}
+    /* Professional trials badge */
+    .trials-wrap{margin-left:auto;display:flex;align-items:center;gap:12px}
+    .plan-label{display:flex;align-items:center;gap:10px;font-weight:700;color:#111}
+    .plan-dot{width:18px;height:18px;border-radius:6px;background:#000}
+    .trials-badge{
       background:linear-gradient(90deg,#ffffff,#f7f7ff);
-      padding:10px 14px;
-      border-radius:12px;
-      border:1px solid rgba(0,0,0,0.06);
-      display:inline-flex;
-      align-items:center;
-      gap:10px;
-      font-size:15px;
-      box-shadow:0 8px 18px rgba(110,90,200,0.06);
+      border-radius:12px;padding:8px 12px;border:1px solid rgba(0,0,0,0.06);display:flex;align-items:center;gap:10px;box-shadow:0 12px 30px rgba(110,90,200,0.05)
     }
-    .trials .count{
-      background:linear-gradient(90deg,#7a5bff,#6aa3ff);
-      color:#fff;padding:6px 10px;border-radius:999px;font-weight:900;font-size:14px;
+    .trials-count{
+      background:linear-gradient(90deg,#7a5bff,#6aa3ff);color:#fff;padding:8px 10px;border-radius:10px;font-weight:900;font-size:15px;min-width:44px;text-align:center;
     }
     /* right preview area */
     .result-wrap{width:100%;height:100%;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:12px}
     .result-wrap .note{color:#999}
-    .result-img{max-width:95%;max-height:78vh;border-radius:12px;box-shadow:0 20px 40px rgba(30,20,80,0.06);object-fit:contain;display:none}
+    .result-img{max-width:95%;max-height:80vh;border-radius:12px;box-shadow:0 20px 40px rgba(30,20,80,0.06);object-fit:contain;display:none}
     a.privacy{color:#666;text-decoration:underline}
     .subscribe-pulse{animation: pulse 1.6s infinite}
     @keyframes pulse{0%{transform:scale(1)}50%{transform:scale(1.03)}100%{transform:scale(1)}}
+    /* small responsive */
+    @media (max-width:900px){ .app{flex-direction:column;height:auto;padding:18px} .left{width:100%} .right{width:100%} .brand h1{font-size:36px} }
   </style>
 </head>
 <body>
@@ -119,7 +117,7 @@
         </div>
       </div>
 
-      <div style="display:flex;gap:10px;margin-top:12px">
+      <div style="display:flex;gap:10px;margin-top:14px">
         <button id="removeBtn" class="btn btn-green" style="flex:1">Remove Background</button>
         <button id="subscribeBtn" class="btn btn-sub">★ Subscribe</button>
       </div>
@@ -128,12 +126,18 @@
 
       <div class="footer">
         <div style="display:flex;gap:12px;align-items:center">
-          <div style="width:18px;height:18px;border-radius:6px;background:#000"></div>
-          <div style="font-weight:700">Your Plan: Free</div>
-          <div style="margin-left:auto" class="trials">Trials remaining: <span class="count" id="trialsCount">3</span></div>
+          <div class="plan-label">
+            <div class="plan-dot"></div>
+            <div>Your Plan: <strong>Free</strong></div>
+          </div>
+          <div style="margin-left:auto" class="trials-badge">
+            <div style="font-size:13px;color:#666">Trials</div>
+            <div class="trials-count" id="trialsCount">3</div>
+          </div>
         </div>
+
         <div class="status-pill" id="status">Status: Idle</div>
-        <div><a class="privacy" href="/privacy.html" target="_blank" rel="noopener">Privacy Policy: Read</a></div>
+        <div><a class="privacy" href="privacy.html" target="_blank" rel="noopener">Privacy Policy: Read</a></div>
       </div>
     </div>
 
@@ -146,12 +150,12 @@
   </div>
 
   <script>
-    // service worker registration
+    // register service worker if available
     if ('serviceWorker' in navigator) {
       navigator.serviceWorker.register('/service-worker.js').catch(()=>{/* ignore */});
     }
 
-    // Elements
+    // elements
     const fileInput = document.getElementById('fileInput');
     const dropArea = document.getElementById('dropArea');
     const uploadContent = document.getElementById('uploadContent');
@@ -163,7 +167,6 @@
     const subscribeBtn = document.getElementById('subscribeBtn');
     const trialsCountEl = document.getElementById('trialsCount');
 
-    // Trials logic (3 free tries)
     let trials = 3;
     function updateTrialsUI(){
       trialsCountEl.textContent = trials;
@@ -172,6 +175,9 @@
         removeBtn.style.opacity = '0.6';
         subscribeBtn.classList.add('subscribe-pulse');
         setStatus('Trials finished — please subscribe');
+      } else {
+        removeBtn.disabled = false;
+        subscribeBtn.classList.remove('subscribe-pulse');
       }
     }
 
@@ -194,14 +200,13 @@
       resultPreview.src = '';
     }
 
-    // File selection
+    // file selection and drag/drop
     dropArea.addEventListener('click', ()=> fileInput.click());
     uploadBtn.addEventListener('click', ()=> fileInput.click());
 
     dropArea.addEventListener('dragover', e=>{ e.preventDefault(); dropArea.classList.add('hover'); });
     dropArea.addEventListener('dragleave', e=>{ e.preventDefault(); dropArea.classList.remove('hover'); });
     dropArea.addEventListener('drop', e=>{ e.preventDefault(); dropArea.classList.remove('hover'); if(e.dataTransfer.files.length) handleFile(e.dataTransfer.files[0]); });
-
     fileInput.addEventListener('change', e => { if(e.target.files[0]) handleFile(e.target.files[0]); });
 
     function handleFile(file){
@@ -216,17 +221,17 @@
       setStatus('Image ready');
     }
 
-    // Remove background (demo simulation + trials decrement)
+    // remove background (demo) -> here replace with real API call to your backend
     removeBtn.addEventListener('click', async ()=>{
       if(!uploadedBlobUrl){ alert('Please upload an image first.'); return; }
       if(trials <= 0){ alert('No trials left. Please subscribe.'); return; }
       setStatus('Processing...');
       removeBtn.disabled = true;
 
-      // simulate server call (replace with real API call later)
-      await new Promise(r=>setTimeout(r,1800));
+      // simulate server processing (replace this with fetch to your backend)
+      await new Promise(r=>setTimeout(r,1500));
 
-      // Demo: use uploaded image as processed result
+      // demo: use uploaded image as result
       if (processedBlobUrl && processedBlobUrl !== uploadedBlobUrl) URL.revokeObjectURL(processedBlobUrl);
       processedBlobUrl = uploadedBlobUrl;
       resultPreview.src = processedBlobUrl;
@@ -241,7 +246,7 @@
       removeBtn.disabled = false;
     });
 
-    // Download result
+    // download
     downloadBtn.addEventListener('click', ()=>{
       if(!resultPreview.src) return;
       const a = document.createElement('a');
@@ -250,15 +255,14 @@
       a.click();
     });
 
-    // Subscribe behaviour (demo)
+    // subscribe demo
     subscribeBtn.addEventListener('click', ()=>{
-      alert('Subscribe flow: after packaging, this will open Microsoft Store purchase dialog.');
+      alert('Subscribe flow (demo). After packaging, this will open the Microsoft Store purchase dialog.');
     });
 
-    // init UI
+    // init
     updateTrialsUI();
 
-    // cleanup on exit
     window.addEventListener('beforeunload', ()=>{
       if (uploadedBlobUrl) URL.revokeObjectURL(uploadedBlobUrl);
     });
