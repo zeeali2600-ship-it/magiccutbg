@@ -26,18 +26,14 @@
     *{box-sizing:border-box}
     body{
       margin:0;
-      font-family: Inter, "Segoe UI", Roboto, Arial, sans-serif;
+      font-family: Inter,"Segoe UI",Roboto,Arial,sans-serif;
       background: linear-gradient(180deg,var(--bg),#fff);
       color:#111;
       -webkit-font-smoothing:antialiased;
     }
-
-    /* Layout */
     .app{display:flex;gap:28px;padding:20px 28px;height:100vh;align-items:flex-start;justify-content:flex-start}
-    .left{width:var(--content-width); flex:0 0 var(--content-width)}
-    .right{flex:1; display:flex; align-items:center; justify-content:center; min-width:0} /* allow shrinking/growing */
-
-    /* Card with outer visible ring */
+    .left{width:var(--content-width);flex:0 0 var(--content-width)}
+    .right{flex:1;display:flex;align-items:center;justify-content:center;min-width:0}
     .card{
       background:var(--panel);
       border-radius:var(--radius-lg);
@@ -55,8 +51,6 @@
       border:3px solid rgba(170,160,200,0.30);
       pointer-events:none;
     }
-
-    /* Brand */
     .brand{text-align:center;margin-bottom:8px}
     .brand h1{
       font-size:36px;
@@ -68,15 +62,13 @@
       -webkit-background-clip:text;background-clip:text;
     }
     .brand p{margin:0;color:#6b6b77;font-size:13px}
-
-    /* inner panel */
     .inner{
-      background: linear-gradient(180deg,#fff,#fbfbff);
+      background:linear-gradient(180deg,#fff,#fbfbff);
       border-radius:16px;
       padding:14px;
       margin-top:6px;
       border:1px solid var(--outline-subtle);
-      box-shadow: 0 10px 28px rgba(120,100,180,0.03);
+      box-shadow:0 10px 28px rgba(120,100,180,0.03);
       position:relative;
       min-height:calc(100vh - 150px);
     }
@@ -88,8 +80,6 @@
       border:2px solid rgba(170,160,200,0.20);
       pointer-events:none;
     }
-
-    /* upload box */
     .upload{
       position:relative;
       border-radius:12px;
@@ -113,50 +103,38 @@
     .upload input{display:none}
     .placeholder{color:#98a0b3;text-align:center;font-size:15px;z-index:2}
     .upload img{max-width:100%;max-height:var(--max-upload-h);border-radius:10px;object-fit:contain;z-index:2}
-
-    /* Controls */
     .controls{display:flex;gap:12px;margin-top:14px;align-items:center}
     .field{flex:1}
     select,input{padding:10px;border-radius:10px;border:1px solid rgba(120,100,180,0.08);background:#fff;width:100%;font-size:14px}
-
-    /* Buttons - slim professional */
     .btn{display:inline-block;padding:10px 20px;border-radius:14px;border:none;cursor:pointer;font-weight:800;position:relative;overflow:hidden;transition:transform .12s ease,box-shadow .12s ease;font-size:15px;color:#fff;box-shadow:0 10px 28px rgba(30,20,80,0.06);min-width:140px;text-align:center;white-space:nowrap}
     .btn:active{transform:translateY(1px)}
     .btn:before{content:'';position:absolute;left:-40%;top:-60%;width:90%;height:220%;transform:rotate(25deg);opacity:0.22;background:linear-gradient(90deg,rgba(255,255,255,0.95),rgba(255,255,255,0.12));transition:all .6s ease}
     .btn-upload{background:linear-gradient(90deg,var(--accent1),var(--accent2));padding:10px 30px;border-radius:18px}
     .btn-remove{background:linear-gradient(90deg,#7fa3ff,#9fd0ff);min-width:170px;border-radius:14px}
     .btn-sub{background:linear-gradient(90deg,var(--accent-yellow),#ffcf5a);color:#111;min-width:120px;border-radius:14px;box-shadow:0 12px 34px rgba(255,170,60,0.10)}
-    .btn-download{background: linear-gradient(180deg,var(--green1),var(--green2));padding:10px 36px;border-radius:18px;display:block;margin:16px auto 0;min-width:220px;box-shadow:0 18px 48px rgba(40,150,110,0.16);border:2px solid rgba(0,0,0,0.05);color:#fff;font-weight:900;position:relative}
-    .btn-download:after{content:'';position:absolute;left:8px;right:8px;top:8px;height:34%;background:linear-gradient(180deg, rgba(255,255,255,0.55), rgba(255,255,255,0));border-radius:14px 14px 0 0;pointer-events:none;mix-blend-mode:overlay}
-
-    /* actions layout */
+    .btn-download{background:linear-gradient(180deg,var(--green1),var(--green2));padding:10px 36px;border-radius:18px;display:block;margin:16px auto 0;min-width:220px;box-shadow:0 18px 48px rgba(40,150,110,0.16);border:2px solid rgba(0,0,0,0.05);color:#fff;font-weight:900;position:relative}
+    .btn-download:after{content:'';position:absolute;left:8px;right:8px;top:8px;height:34%;background:linear-gradient(180deg,rgba(255,255,255,0.55),rgba(255,255,255,0));border-radius:14px 14px 0 0;pointer-events:none;mix-blend-mode:overlay}
     .actions{display:flex;gap:12px;margin-top:16px;align-items:center;justify-content:space-between}
     .actions .left{flex:1}
     .download-row{text-align:center;margin-top:12px}
-
-    /* footer (trials & status) */
     .footer{margin-top:14px;display:flex;flex-direction:column;gap:10px}
     .trials-wrap{display:flex;align-items:center;gap:12px;justify-content:flex-start}
     .trials-oval{background:rgba(122,91,255,0.08);padding:8px 12px;border-radius:999px;font-weight:800;color:var(--accent1);font-size:13px;box-shadow:0 6px 16px rgba(122,91,255,0.05)}
     .progress-wrap{width:240px;height:10px;background:#f4f4f8;border-radius:999px;overflow:hidden;border:1px solid rgba(0,0,0,0.04)}
     .progress-bar{height:100%;background:linear-gradient(90deg,#2ecc71,#27b36f);width:100%;transition:width .3s}
-
     .status-pill{margin-top:8px;background:#0b0b0b;color:#fff;padding:12px;border-radius:12px;font-weight:700;box-shadow:0 8px 24px rgba(0,0,0,0.08)}
-
-    /* RESULT PANEL - made larger and perfectly centered, with darker outlines */
     .result-frame{
       width:100%;
-      height:calc(100vh - 40px); /* use more vertical space */
+      height:calc(100vh - 40px);
       border-radius:40px;
-      padding:10px;              /* small padding so inner area is large */
+      padding:10px;
       background:linear-gradient(180deg,#fff,#fbfbff);
       box-shadow:var(--shadow-soft);
-      border:4px solid rgba(160,150,200,0.42); /* darker visible outer border */
+      border:4px solid rgba(160,150,200,0.42);
       display:flex;
       align-items:center;
       justify-content:center;
     }
-    /* result-inner now fills almost entire frame (98% x 98%) */
     .result-inner{
       width:98%;
       height:98%;
@@ -178,10 +156,8 @@
     }
     .result-note{color:#98a0b3;font-size:18px;text-align:center;z-index:2}
     .result-img{max-width:100%;max-height:100%;object-fit:contain;border-radius:6px;display:none;box-shadow:0 28px 72px rgba(30,20,80,0.10);z-index:2}
-
-    /* responsive adjustments */
     @media (max-width:1200px){
-      .left{width:420px; flex:0 0 420px}
+      .left{width:420px;flex:0 0 420px}
       .result-frame{height:calc(100vh - 60px)}
     }
     @media (max-width:980px){
@@ -255,7 +231,9 @@
             </div>
 
             <div class="status-pill" id="status">Status: Idle</div>
-            <div style="margin-top:8px;text-align:center"><a class="privacy" href="privacy.html" target="_blank" rel="noopener" style="color:#6f6f7a;text-decoration:underline">Privacy Policy: Read</a></div>
+            <div style="margin-top:8px;text-align:center">
+              <a class="privacy" href="privacy.html" target="_blank" rel="noopener" style="color:#6f6f7a;text-decoration:underline">Privacy Policy: Read</a>
+            </div>
           </div>
         </div>
       </div>
@@ -272,7 +250,7 @@
   </div>
 
   <script>
-    if ('serviceWorker' in navigator) navigator.serviceWorker.register('/service-worker.js').catch(()=>{/* ignore */});
+    if ('serviceWorker' in navigator) navigator.serviceWorker.register('/service-worker.js').catch(()=>{});
 
     const fileInput = document.getElementById('fileInput');
     const dropArea = document.getElementById('dropArea');
@@ -291,12 +269,17 @@
 
     dropArea.addEventListener('dragover', e=>{ e.preventDefault(); dropArea.classList.add('hover'); });
     dropArea.addEventListener('dragleave', e=>{ e.preventDefault(); dropArea.classList.remove('hover'); });
-    dropArea.addEventListener('drop', e=>{ e.preventDefault(); dropArea.classList.remove('hover'); if(e.dataTransfer.files.length) handleFile(e.dataTransfer.files[0]); });
+    dropArea.addEventListener('drop', e=>{
+      e.preventDefault();
+      dropArea.classList.remove('hover');
+      if(e.dataTransfer.files.length) handleFile(e.dataTransfer.files[0]);
+    });
     fileInput.addEventListener('change', e => { if(e.target.files[0]) handleFile(e.target.files[0]); });
 
     let uploadedBlobUrl = null;
     let processedBlobUrl = null;
     let trials = 3;
+    let uploadedFile = null; // NEW (Step 7)
 
     function setStatus(text){ statusEl.textContent = 'Status: ' + text; }
     function updateTrialsUI(){
@@ -331,36 +314,55 @@
 
     function handleFile(file){
       if(!file.type.startsWith('image/')) { alert('Please select an image'); return; }
-      const maxBytes = 8 * 1024 * 1024; // 8 MB allowed now
+      const maxBytes = 8 * 1024 * 1024;
       if (file.size > maxBytes) { alert('File too large. Maximum 8 MB allowed.'); return; }
       if (uploadedBlobUrl) URL.revokeObjectURL(uploadedBlobUrl);
       uploadedBlobUrl = URL.createObjectURL(file);
+      uploadedFile = file; // NEW (Step 7)
       showUploadImage(uploadedBlobUrl);
       clearResult();
       downloadBtn.disabled = true;
       setStatus('Image ready');
     }
 
-    removeBtn.addEventListener('click', async ()=>{
-      if(!uploadedBlobUrl){ alert('Please upload an image first.'); return; }
-      if(trials <= 0){ alert('No trials left. Please subscribe.'); return; }
+    // NEW Remove button handler (Step 7)
+    removeBtn.addEventListener('click', async () => {
+      if (!uploadedFile){ alert('Please upload an image first.'); return; }
+      if (trials <= 0){ alert('No trials left. Please subscribe.'); return; }
+
       setStatus('Processing...');
       removeBtn.disabled = true;
       resultNote.style.display = 'none';
 
-      await new Promise(r=>setTimeout(r,1500));
+      try {
+        const fd = new FormData();
+        fd.append('image', uploadedFile, uploadedFile.name);
 
-      if (processedBlobUrl && processedBlobUrl !== uploadedBlobUrl) URL.revokeObjectURL(processedBlobUrl);
-      processedBlobUrl = uploadedBlobUrl;
-      resultPreview.src = processedBlobUrl;
-      resultPreview.style.display = 'block';
-      downloadBtn.disabled = false;
+        // Local backend call
+        const res = await fetch('http://localhost:3000/api/remove', {
+          method: 'POST',
+          body: fd
+        });
 
-      trials = Math.max(0, trials - 1);
-      updateTrialsUI();
+        if (!res.ok) throw new Error('Server error');
+        const blob = await res.blob();
 
-      setStatus('Done');
-      removeBtn.disabled = false;
+        if (processedBlobUrl) URL.revokeObjectURL(processedBlobUrl);
+        processedBlobUrl = URL.createObjectURL(blob);
+        resultPreview.src = processedBlobUrl;
+        resultPreview.style.display = 'block';
+        downloadBtn.disabled = false;
+
+        trials = Math.max(0, trials - 1);
+        updateTrialsUI();
+        setStatus('Done');
+      } catch (e){
+        console.error(e);
+        setStatus('Failed');
+        alert('Processing failed. Try again.');
+      } finally {
+        removeBtn.disabled = false;
+      }
     });
 
     downloadBtn.addEventListener('click', ()=>{
@@ -373,10 +375,8 @@
 
     subscribeBtn.addEventListener('click', ()=> { alert('Subscribe flow (demo).'); });
 
-    // init
     updateTrialsUI();
     window.addEventListener('beforeunload', ()=>{ if (uploadedBlobUrl) URL.revokeObjectURL(uploadedBlobUrl); });
-
   </script>
 </body>
 </html>
