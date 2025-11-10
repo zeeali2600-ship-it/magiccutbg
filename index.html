@@ -19,24 +19,24 @@
     *{box-sizing:border-box}
     body{margin:0;font-family:Inter,Segoe UI,Arial,sans-serif;background:linear-gradient(180deg,var(--bg),#fff);color:#111}
     .app{display:flex;gap:18px;padding:22px;height:100vh;align-items:flex-start}
-    .left{width:370px;background:var(--card);border-radius:var(--radius);padding:20px;box-shadow:0 10px 30px rgba(30,20,80,0.06);display:flex;flex-direction:column}
+    .left{width:380px;background:var(--card);border-radius:var(--radius);padding:22px 20px 20px 20px;box-shadow:0 10px 30px rgba(30,20,80,0.06);display:flex;flex-direction:column}
     .right{flex:1;background:var(--card);border-radius:var(--radius);padding:20px;box-shadow:0 10px 30px rgba(30,20,80,0.04);display:flex;flex-direction:column;align-items:center;justify-content:center}
-    .brand{text-align:center;margin-bottom:6px}
+    .brand{text-align:center;margin-bottom:10px;padding-top:6px} /* added padding-top to avoid clipping */
     /* make title bigger and not clipped */
     .brand h1{
-      font-size:48px;
-      margin:6px 0 2px 0;
-      line-height:1;
+      font-size:52px; /* bigger */
+      margin:6px 0 4px 0;
+      line-height:1.02;
       color:transparent;
       background:linear-gradient(90deg,#ff8bd1,#9b6bff,#6aa3ff);
       -webkit-background-clip:text;background-clip:text;font-weight:900;
-      text-shadow:0 8px 20px rgba(155,107,255,0.12)
+      text-shadow:0 10px 30px rgba(155,107,255,0.12)
     }
     .brand p{margin:0;color:#666;font-size:15px}
-    /* upload box */
-    .upload{border-radius:12px;border:2px dashed #e9e6f6;padding:18px;min-height:200px;background:linear-gradient(180deg,#fff,#fbfbff);display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden}
+    /* upload box bigger and clearer */
+    .upload{border-radius:12px;border:2px dashed #e9e6f6;padding:20px;min-height:260px;background:linear-gradient(180deg,#fff,#fbfbff);display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden}
     .upload.hover{border-color:var(--accent1)}
-    .upload img{max-width:100%;max-height:170px;border-radius:10px;object-fit:contain;display:block}
+    .upload img{max-width:100%;max-height:220px;border-radius:10px;object-fit:contain;display:block}
     .upload .placeholder{text-align:center;color:#9aa0b3;font-size:14px}
     .upload input{display:none}
     /* shiny 3D buttons */
@@ -54,7 +54,24 @@
     .subscribe-row{display:flex;gap:8px;align-items:center;margin-top:12px}
     .footer{font-size:13px;color:#666;margin-top:auto;display:flex;flex-direction:column;gap:8px}
     .status-pill{background:#000;color:#fff;padding:10px;border-radius:12px;width:100%;text-align:left;box-shadow:0 6px 18px rgba(0,0,0,0.12)}
-    .trials{font-weight:800;color:#111;background:linear-gradient(90deg,#fff,#f7f7ff);padding:10px;border-radius:10px;border:1px solid #eee;display:inline-block}
+    /* Trials: professional look */
+    .trials{
+      font-weight:900;
+      color:#111;
+      background:linear-gradient(90deg,#ffffff,#f7f7ff);
+      padding:10px 14px;
+      border-radius:12px;
+      border:1px solid rgba(0,0,0,0.06);
+      display:inline-flex;
+      align-items:center;
+      gap:10px;
+      font-size:15px;
+      box-shadow:0 8px 18px rgba(110,90,200,0.06);
+    }
+    .trials .count{
+      background:linear-gradient(90deg,#7a5bff,#6aa3ff);
+      color:#fff;padding:6px 10px;border-radius:999px;font-weight:900;font-size:14px;
+    }
     /* right preview area */
     .result-wrap{width:100%;height:100%;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:12px}
     .result-wrap .note{color:#999}
@@ -77,7 +94,7 @@
         <div id="uploadContent">
           <div class="placeholder">
             <div style="font-weight:700;color:#666">Click here to choose image</div>
-            <div style="font-size:12px;color:#9aa0b3">or drag & drop (JPG/PNG up to 15 MB)</div>
+            <div style="font-size:13px;color:#9aa0b3">or drag & drop (JPG/PNG up to 5 MB)</div>
           </div>
         </div>
       </label>
@@ -113,10 +130,10 @@
         <div style="display:flex;gap:12px;align-items:center">
           <div style="width:18px;height:18px;border-radius:6px;background:#000"></div>
           <div style="font-weight:700">Your Plan: Free</div>
-          <div style="margin-left:auto" class="trials">Trials remaining: <span id="trialsCount">3</span></div>
+          <div style="margin-left:auto" class="trials">Trials remaining: <span class="count" id="trialsCount">3</span></div>
         </div>
         <div class="status-pill" id="status">Status: Idle</div>
-        <div><a class="privacy" href="https://github.com/zeeali2600-ship-it/magiccutbg-site" target="_blank" rel="noopener">Privacy Policy: Read</a></div>
+        <div><a class="privacy" href="/privacy.html" target="_blank" rel="noopener">Privacy Policy: Read</a></div>
       </div>
     </div>
 
@@ -168,7 +185,7 @@
       const img = document.createElement('img');
       img.src = url;
       img.alt = 'uploaded';
-      img.style.maxHeight = '170px';
+      img.style.maxHeight = '220px';
       uploadContent.appendChild(img);
     }
 
@@ -189,6 +206,8 @@
 
     function handleFile(file){
       if(!file.type.startsWith('image/')) { alert('Please select an image'); return; }
+      const maxBytes = 5 * 1024 * 1024; // 5 MB
+      if (file.size > maxBytes) { alert('File too large. Maximum 5 MB allowed.'); return; }
       if (uploadedBlobUrl) URL.revokeObjectURL(uploadedBlobUrl);
       uploadedBlobUrl = URL.createObjectURL(file);
       showUploadImage(uploadedBlobUrl);
@@ -233,7 +252,6 @@
 
     // Subscribe behaviour (demo)
     subscribeBtn.addEventListener('click', ()=>{
-      // in packaged app use Store API; here just show message
       alert('Subscribe flow: after packaging, this will open Microsoft Store purchase dialog.');
     });
 
