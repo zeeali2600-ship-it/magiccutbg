@@ -3,6 +3,7 @@ const ASSETS = [
   '/',
   '/index.html',
   '/manifest.json',
+  '/privacy.html',
   '/design.png'
 ];
 
@@ -19,14 +20,12 @@ self.addEventListener('activate', event => {
 
 self.addEventListener('fetch', event => {
   const url = new URL(event.request.url);
-  // For navigation requests, try network first then fallback to cache
   if (event.request.mode === 'navigate') {
     event.respondWith(
       fetch(event.request).catch(() => caches.match('/index.html'))
     );
     return;
   }
-  // For other requests, respond with cache-first
   event.respondWith(
     caches.match(event.request).then(res => res || fetch(event.request).catch(()=> caches.match('/index.html')))
   );
