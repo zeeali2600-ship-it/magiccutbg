@@ -14,26 +14,25 @@
       --accent-yellow:#ffd36b;
       --green1:#40d39a;
       --green2:#27b36f;
-      --muted:#f6f6fb;
-      --outline-strong: rgba(120,100,180,0.14);
-      --outline-subtle: rgba(120,100,180,0.08);
-      --radius-lg:20px;
+      --outline-strong: rgba(120,100,180,0.16);
+      --outline-subtle: rgba(120,100,180,0.10);
+      --radius-lg:28px;
       --radius-md:12px;
-      --shadow-strong: 0 20px 48px rgba(30,20,80,0.07);
-      --shadow-soft: 0 10px 28px rgba(30,20,80,0.05);
+      --shadow-strong: 0 22px 56px rgba(30,20,80,0.08);
+      --shadow-soft: 0 10px 30px rgba(30,20,80,0.05);
       --max-upload-h:260px;
       --content-width:420px;
     }
-
     *{box-sizing:border-box}
     body{
       margin:0;
       font-family: Inter, "Segoe UI", Roboto, Arial, sans-serif;
       background: linear-gradient(180deg,var(--bg),#fff);
       color:#111;
+      -webkit-font-smoothing:antialiased;
     }
 
-    /* Page layout */
+    /* overall layout */
     .app{display:flex;gap:28px;padding:28px;height:100vh;align-items:flex-start;justify-content:flex-start}
     .left{width:var(--content-width)}
     .card{
@@ -42,13 +41,23 @@
       padding:20px;
       box-shadow:var(--shadow-strong);
       border:1px solid rgba(0,0,0,0.02);
-      outline:1px solid rgba(120,100,180,0.03); /* subtle outer line like sample */
+      position:relative;
+      /* visible outer rounded outline on top of card (like sample) */
+    }
+    /* outline ring like sample above card */
+    .card::before{
+      content:'';
+      position:absolute;
+      inset:6px;
+      border-radius:calc(var(--radius-lg) - 6px);
+      border:2px solid rgba(200,190,220,0.25);
+      pointer-events:none;
     }
 
     /* Brand */
     .brand{text-align:center;margin-bottom:8px}
     .brand h1{
-      font-size:40px; /* slightly smaller */
+      font-size:42px;
       margin:6px 0 4px 0;
       line-height:1;
       font-weight:900;
@@ -59,7 +68,7 @@
     }
     .brand p{margin:0;color:#6b6b77;font-size:13px}
 
-    /* inner panel with outer border line and subtle shadow to match screenshot */
+    /* inner panel (content box) with subtle outer outline line */
     .inner{
       background: linear-gradient(180deg,#fff,#fbfbff);
       border-radius:14px;
@@ -67,9 +76,19 @@
       margin-top:6px;
       border:1px solid var(--outline-subtle);
       box-shadow: 0 8px 22px rgba(120,100,180,0.02);
+      position:relative;
+    }
+    /* inner outline ring like example for boxes */
+    .inner::before{
+      content:'';
+      position:absolute;
+      inset:-10px;
+      border-radius:20px;
+      border:2px solid rgba(200,190,220,0.18);
+      pointer-events:none;
     }
 
-    /* Upload box: visible outer border + dashed inner outline */
+    /* upload box: outer border + dashed inner outline (matches screenshot style) */
     .upload{
       position:relative;
       border-radius:12px;
@@ -80,21 +99,21 @@
       justify-content:center;
       background:#fff;
       overflow:hidden;
-      border:2px solid var(--outline-strong); /* outer outline visible */
+      border:2px solid rgba(200,190,220,0.20); /* visible outer outline */
     }
     .upload::after{
       content:'';
       position:absolute;
-      inset:16px;
+      inset:14px;
       border-radius:10px;
-      border:2px dashed var(--outline-subtle); /* inner dashed like sample */
+      border:2px dashed var(--outline-subtle); /* dashed inner outline */
       pointer-events:none;
     }
     .upload input{display:none}
     .placeholder{color:#98a0b3;text-align:center;font-size:15px;z-index:2}
     .upload img{max-width:100%;max-height:var(--max-upload-h);border-radius:10px;object-fit:contain;z-index:2}
 
-    /* Buttons - slim, consistent, 3d-ish */
+    /* Buttons - slim, consistent */
     .btn{
       display:inline-block;
       padding:10px 20px;
@@ -119,7 +138,6 @@
     .btn-upload{background:linear-gradient(90deg,var(--accent1),var(--accent2));padding:10px 28px;border-radius:18px;}
     .btn-remove{background:linear-gradient(90deg,#7fa3ff,#9fd0ff);min-width:170px;border-radius:14px;}
     .btn-sub{background:linear-gradient(90deg,var(--accent-yellow),#ffcf5a);color:#111;min-width:120px;border-radius:14px;box-shadow:0 12px 34px rgba(255,170,60,0.10)}
-    /* Download: glossy 3rd button (shiny) */
     .btn-download{
       background: linear-gradient(180deg,var(--green1),var(--green2));
       padding:10px 36px;
@@ -132,7 +150,6 @@
       color:#fff;
       font-weight:900;
       position:relative;
-      overflow:visible;
     }
     .btn-download:after{
       content:'';
@@ -145,19 +162,19 @@
       mix-blend-mode:overlay;
     }
 
-    /* Controls */
+    /* controls */
     .controls{display:flex;gap:12px;margin-top:14px;align-items:center}
     .field{flex:1}
     select,input{
       padding:10px;border-radius:10px;border:1px solid rgba(120,100,180,0.06);background:#fff;width:100%;font-size:14px;
     }
 
-    /* Actions layout */
+    /* actions layout */
     .actions{display:flex;gap:12px;margin-top:14px;align-items:center;justify-content:space-between}
     .actions .left{flex:1}
     .download-row{text-align:center;margin-top:12px}
 
-    /* Trials & footer */
+    /* footer: trials placed under buttons */
     .footer{margin-top:12px;display:flex;flex-direction:column;gap:10px}
     .trials-wrap{display:flex;align-items:center;gap:12px;justify-content:flex-start}
     .trials-oval{background:rgba(122,91,255,0.07);padding:8px 12px;border-radius:999px;font-weight:800;color:var(--accent1);font-size:13px;box-shadow:0 6px 16px rgba(122,91,255,0.04)}
@@ -166,7 +183,7 @@
 
     .status-pill{margin-top:8px;background:#0b0b0b;color:#fff;padding:12px;border-radius:12px;font-weight:700;box-shadow:0 8px 24px rgba(0,0,0,0.08)}
 
-    /* RESULT PANEL - larger, centered, with visible outer & inner outlines (like example) */
+    /* RESULT PANEL: larger, centered, outer & inner outlines like sample */
     .result-frame{
       width:100%;
       height:calc(100vh - 56px);
@@ -174,7 +191,7 @@
       padding:28px;
       background:linear-gradient(180deg,#fff,#fbfbff);
       box-shadow:var(--shadow-soft);
-      border:2px solid var(--outline-strong); /* visible outer outline like sample */
+      border:2px solid rgba(200,190,220,0.28); /* visible outer outline like screenshot */
       display:flex;
       align-items:center;
       justify-content:center;
@@ -184,25 +201,31 @@
       height:92%;
       border-radius:18px;
       padding:18px;
-      border:2px dashed var(--outline-subtle); /* inner outline (dashed/subtle) */
+      background:#fff;
       display:flex;
       align-items:center;
       justify-content:center;
-      background:#fff;
-      text-align:center;
-      flex-direction:column;
+      position:relative;
     }
+    /* inner faint rounded line inside result area (like example) */
+    .result-inner::before{
+      content:'';
+      position:absolute;
+      inset:12px;
+      border-radius:14px;
+      border:2px solid var(--outline-subtle);
+      pointer-events:none;
+    }
+    .result-note{color:#98a0b3;font-size:18px;text-align:center;align-self:center;z-index:2}
+    .result-img{max-width:100%;max-height:100%;object-fit:contain;border-radius:8px;display:none;box-shadow:0 20px 48px rgba(30,20,80,0.06);z-index:2}
 
-    .result-note{color:#98a0b3;font-size:18px;text-align:center;align-self:center}
-    .result-img{max-width:100%;max-height:100%;object-fit:contain;border-radius:8px;display:none;box-shadow:0 20px 48px rgba(30,20,80,0.06)}
-
-    /* Responsive */
+    /* responsive tweaks */
     @media (max-width:980px){
       .app{flex-direction:column;padding:18px;height:auto}
       .left{width:100%}
       .result-frame{height:420px;padding:16px}
       .result-inner{width:96%;height:84%}
-      .brand h1{font-size:32px}
+      .brand h1{font-size:34px}
     }
   </style>
 </head>
@@ -288,7 +311,7 @@
     // service worker registration (optional)
     if ('serviceWorker' in navigator) navigator.serviceWorker.register('/service-worker.js').catch(()=>{/* ignore */});
 
-    // Elements
+    // elements
     const fileInput = document.getElementById('fileInput');
     const dropArea = document.getElementById('dropArea');
     const uploadContent = document.getElementById('uploadContent');
@@ -302,10 +325,10 @@
     const trialsCountEl = document.getElementById('trialsCount');
     const trialsBar = document.getElementById('trialsBar');
 
-    // Single-click: upload button opens file dialog; label handles box click automatically
+    // single-click: upload button opens file dialog; label handles box click automatically
     uploadBtn.addEventListener('click', ()=> fileInput.click());
 
-    // Drag/drop
+    // drag/drop
     dropArea.addEventListener('dragover', e=>{ e.preventDefault(); dropArea.classList.add('hover'); });
     dropArea.addEventListener('dragleave', e=>{ e.preventDefault(); dropArea.classList.remove('hover'); });
     dropArea.addEventListener('drop', e=>{ e.preventDefault(); dropArea.classList.remove('hover'); if(e.dataTransfer.files.length) handleFile(e.dataTransfer.files[0]); });
@@ -336,7 +359,7 @@
       const img = document.createElement('img');
       img.src = url;
       img.alt = 'uploaded';
-      img.style.maxHeight = '240px';
+      img.style.maxHeight = '260px';
       uploadContent.appendChild(img);
     }
 
@@ -358,7 +381,7 @@
       setStatus('Image ready');
     }
 
-    // Remove background (demo): replace with server API later
+    // Remove background (demo)
     removeBtn.addEventListener('click', async ()=>{
       if(!uploadedBlobUrl){ alert('Please upload an image first.'); return; }
       if(trials <= 0){ alert('No trials left. Please subscribe.'); return; }
@@ -369,7 +392,6 @@
       // simulate server processing (replace with real fetch)
       await new Promise(r=>setTimeout(r,1500));
 
-      // demo: reuse uploaded image as processed result
       if (processedBlobUrl && processedBlobUrl !== uploadedBlobUrl) URL.revokeObjectURL(processedBlobUrl);
       processedBlobUrl = uploadedBlobUrl;
       resultPreview.src = processedBlobUrl;
@@ -383,7 +405,7 @@
       removeBtn.disabled = false;
     });
 
-    // Download
+    // download
     downloadBtn.addEventListener('click', ()=>{
       if(!resultPreview.src) return;
       const a = document.createElement('a');
@@ -392,7 +414,7 @@
       a.click();
     });
 
-    // Subscribe (demo)
+    // subscribe demo
     subscribeBtn.addEventListener('click', ()=> { alert('Subscribe flow (demo).'); });
 
     // init
