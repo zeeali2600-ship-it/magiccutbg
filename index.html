@@ -9,8 +9,8 @@
     :root{
       --bg:#fbf8ff;
       --card:#ffffff;
-      --accent1:#7a5bff; /* purple */
-      --accent2:#6aa3ff; /* blue */
+      --accent1:#7a5bff;
+      --accent2:#6aa3ff;
       --yellow:#ffd36b;
       --green1:#35d0a2;
       --green2:#27b36f;
@@ -44,100 +44,102 @@
     .upload .placeholder{text-align:center;color:#9aa0b3;font-size:14px}
     .upload input{display:none}
 
-    /* Button base - slightly narrower, larger text for good fit */
+    /* Button base - restored compact look */
     .btn{
       display:inline-block;
-      padding:12px 14px;            /* reduced horizontal padding (narrower) */
-      border-radius:16px;
+      padding:10px 18px;            /* narrower */
+      border-radius:14px;           /* slightly smaller radius */
       border:none;
       cursor:pointer;
       font-weight:800;
       position:relative;
       overflow:hidden;
       transition:transform .12s ease,box-shadow .12s ease;
-      font-size:16px;               /* slightly larger inner text */
-      min-width:110px;              /* ensure consistent pill size */
-      max-width:260px;
+      font-size:15px;
+      min-width:120px;
       text-align:center;
       white-space:nowrap;
+      box-shadow:0 8px 26px rgba(30,20,80,0.06);
     }
     .btn:active{transform:translateY(1px)}
-    .btn:before{content:'';position:absolute;left:-45%;top:-60%;width:100%;height:220%;transform:rotate(25deg);opacity:0.22;background:linear-gradient(90deg,rgba(255,255,255,0.9),rgba(255,255,255,0.12));transition:all .6s ease}
+    .btn:before{content:'';position:absolute;left:-42%;top:-58%;width:90%;height:200%;transform:rotate(25deg);opacity:0.22;background:linear-gradient(90deg,rgba(255,255,255,0.9),rgba(255,255,255,0.12));transition:all .6s ease}
     .btn:hover:before{left:120%;opacity:0.6}
 
-    /* Generate (purple) */
-    .btn-generate{
+    /* Upload button (primary) - nice rounded pill */
+    .btn-upload{
       background:linear-gradient(90deg,var(--accent1),var(--accent2));
       color:#fff;
-      box-shadow:0 18px 40px rgba(122,91,255,0.15);
+      padding:12px 28px;
+      border-radius:18px;
+      box-shadow:0 14px 36px rgba(106,99,255,0.12);
+      font-size:15px;
     }
 
-    /* Subscribe (yellow) */
-    .btn-subscribe{
-      background:linear-gradient(90deg,#ffd36b,#ffc94d);
+    /* Action buttons (remove & subscribe) — compact, matching earlier good look */
+    .btn-remove{
+      background:linear-gradient(90deg,#6f9bff,#8bb8ff);
+      color:#fff;
+      padding:10px 20px;
+      border-radius:14px;
+      box-shadow:0 10px 28px rgba(106,99,255,0.10);
+      min-width:170px;
+    }
+    .btn-sub{
+      background:linear-gradient(90deg,var(--yellow),#ffcc57);
       color:#111;
-      box-shadow:0 18px 40px rgba(255,184,90,0.12);
-      padding:14px 18px;
+      padding:10px 18px;
+      border-radius:14px;
+      box-shadow:0 10px 28px rgba(255,184,90,0.10);
+      min-width:110px;
     }
 
-    /* Download (green pill centered) - narrower than before, larger text*/
+    /* Download uses green style but compact */
     .btn-download{
       background:linear-gradient(90deg,var(--green1),var(--green2));
       color:#fff;
-      box-shadow:0 18px 40px rgba(50,180,140,0.12);
-      border-radius:18px;
       padding:12px 26px;
-      font-weight:900;
-      font-size:17px;
+      border-radius:16px;
+      box-shadow:0 12px 32px rgba(40,160,110,0.10);
+      font-weight:800;
+      font-size:16px;
       min-width:160px;
     }
 
-    /* Stop button (soft green pill) */
-    .btn-stop{
-      background:linear-gradient(90deg,#b9f0d8,#82e3b8);
-      color:#fff;
-      box-shadow:0 14px 30px rgba(40,170,120,0.08);
-      border-radius:16px;
-      padding:10px 16px;
-      font-weight:800;
-      font-size:15px;
-      min-width:90px;
-    }
-
-    .controls{display:flex;gap:12px;margin-top:12px;align-items:center}
+    .controls{display:flex;gap:12px;margin-top:12px}
     .field{flex:1}
     select,input{padding:10px;border-radius:10px;border:1px solid #e9e6f6;width:100%}
 
-    /* Layout for the two main action buttons - do not force flex:1 */
-    .actions-row{display:flex;gap:12px;margin-top:14px;align-items:center;justify-content:space-between}
-    .actions-row .left-action{flex:0 0 auto}
-    .actions-row .right-action{flex:0 0 auto}
+    /* actions row: keep buttons natural size and spaced */
+    .actions-row{display:flex;gap:12px;margin-top:14px;align-items:center}
+    .actions-row .left{flex:0}
+    .actions-row .right{flex:0}
 
-    /* Trials area */
-    .trials-container{display:flex;align-items:center;gap:14px;margin-left:auto}
+    /* Trials: compact oval + small progress */
+    .trials-container{display:flex;align-items:center;gap:12px;margin-left:auto}
     .trials-oval{
       background:rgba(122,91,255,0.08);
       border-radius:999px;
-      padding:10px 16px;
+      padding:8px 12px;
       font-weight:800;
       color:var(--accent1);
       display:inline-flex;
       align-items:center;
       gap:8px;
       box-shadow:0 6px 18px rgba(122,91,255,0.06);
-      min-width:90px; justify-content:center;
-      font-size:14px;
+      min-width:80px; justify-content:center;
+      font-size:13px;
     }
-    .trials-progress-wrap{width:140px;height:12px;background:#f1f1f6;border-radius:999px;overflow:hidden;border:1px solid rgba(0,0,0,0.03)}
+    .trials-progress-wrap{width:120px;height:10px;background:#f1f1f6;border-radius:999px;overflow:hidden;border:1px solid rgba(0,0,0,0.03)}
     .trials-progress{height:100%;background:linear-gradient(90deg,#2ecc71,#27b36f);width:100%;transition:width .3s ease}
 
-    /* right preview area: exact center for note and big result image */
+    .footer{font-size:13px;color:#666;margin-top:auto;display:flex;flex-direction:column;gap:10px}
+    .status-pill{background:#000;color:#fff;padding:12px;border-radius:12px;width:100%;text-align:left;box-shadow:0 8px 24px rgba(0,0,0,0.12)}
+
+    /* right preview area centered */
     .result-wrap{width:100%;height:calc(100vh - 84px);display:flex;align-items:center;justify-content:center;flex-direction:column;gap:12px;padding:20px}
     .result-note{color:#9aa0b3;font-size:16px;text-align:center}
     .result-img{max-width:85%;max-height:85%;border-radius:12px;box-shadow:0 20px 40px rgba(30,20,80,0.06);object-fit:contain;display:none}
 
-    .footer{font-size:13px;color:#666;margin-top:auto;display:flex;flex-direction:column;gap:10px}
-    .status-pill{background:#000;color:#fff;padding:12px;border-radius:12px;width:100%;text-align:left;box-shadow:0 8px 24px rgba(0,0,0,0.12)}
     a.privacy{color:#666;text-decoration:underline}
     .subscribe-pulse{animation: pulse 1.6s infinite}
     @keyframes pulse{0%{transform:scale(1)}50%{transform:scale(1.03)}100%{transform:scale(1)}}
@@ -163,7 +165,9 @@
         </div>
       </label>
 
-      <button id="uploadBtn" class="btn btn-generate" style="margin-top:12px">Upload Image</button>
+      <div style="display:flex;justify-content:center;margin-top:14px">
+        <button id="uploadBtn" class="btn btn-upload">Upload Image</button>
+      </div>
 
       <div class="controls">
         <div class="field">
@@ -183,13 +187,12 @@
         </div>
       </div>
 
-      <!-- actions row: narrower buttons, not forced to full width -->
       <div class="actions-row">
-        <div class="left-action"><button id="removeBtn" class="btn btn-action">Remove Background</button></div>
-        <div class="right-action"><button id="subscribeBtn" class="btn btn-subscribe">★ Subscribe</button></div>
+        <div class="left"><button id="removeBtn" class="btn btn-remove">Remove Background</button></div>
+        <div class="right"><button id="subscribeBtn" class="btn btn-sub">★ Subscribe</button></div>
       </div>
 
-      <div class="center-row" style="display:flex;justify-content:center;margin-top:14px">
+      <div style="display:flex;justify-content:center;margin-top:14px">
         <button id="downloadBtn" class="btn-download" disabled>Download</button>
       </div>
 
