@@ -364,7 +364,7 @@
           body: fd
         });
 
-        // NEW: precise handling for server-enforced no-trials
+        // Precise handling for server-enforced no-trials
         if (res.status === 402){
           await fetchTrials();
           setStatus('Trials finished — please subscribe');
@@ -385,11 +385,16 @@
         resultPreview.style.display = 'block';
         downloadBtn.disabled = false;
 
-        // Update trials from response header or fallback fetch
-        const trialsLeftHeader = Number(res.headers.get('x-trials-left'));
-        if (!Number.isNaN(trialsLeftHeader)) {
-          trials = trialsLeftHeader;
-          updateTrialsUI();
+        // Update trials from response header or fallback fetch (NULL-safe)
+        const hdr = res.headers.get('x-trials-left');
+        if (hdr !== null) {
+          const n = Number(hdr);
+          if (!Number.isNaN(n)) {
+            trials = n;
+            updateTrialsUI();
+          } else {
+            await fetchTrials();
+          }
         } else {
           await fetchTrials();
         }
@@ -415,7 +420,7 @@
     subscribeBtn.addEventListener('click', ()=> { alert('Subscribe flow (demo).'); });
 
     // Initial load
-    warmup();      // NEW
+    warmup();
     fetchTrials();
 
     window.addEventListener('beforeunload', ()=>{ if (uploadedBlobUrl) URL.revokeObjectURL(uploadedBlobUrl); });
