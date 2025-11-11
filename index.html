@@ -5,7 +5,6 @@
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>MagicCutBG</title>
 
-  <!-- paste these two lines here (replace old manifest line) -->
   <link rel="manifest" href="manifest.json" />
   <meta name="theme-color" content="#7c4dff" />
 
@@ -254,7 +253,8 @@
   </div>
 
   <script>
-    if ('serviceWorker' in navigator) navigator.serviceWorker.register('/service-worker.js').catch(()=>{});
+    // GitHub Pages subpath fix: relative SW path (no leading slash)
+    if ('serviceWorker' in navigator) navigator.serviceWorker.register('service-worker.js').catch(()=>{});
 
     const fileInput = document.getElementById('fileInput');
     const dropArea = document.getElementById('dropArea');
@@ -283,7 +283,7 @@
     let uploadedBlobUrl = null;
     let processedBlobUrl = null;
     let trials = 3;
-    let uploadedFile = null; // NEW (Step 7)
+    let uploadedFile = null;
 
     function setStatus(text){ statusEl.textContent = 'Status: ' + text; }
     function updateTrialsUI(){
@@ -299,6 +299,15 @@
         removeBtn.disabled = false;
         subscribeBtn.classList.remove('subscribe-pulse');
       }
+    }
+
+    // Server se trials laane ka helper
+    async function fetchTrials(){
+      try{
+        const r = await fetch('https://magiccutbg-server.onrender.com/api/trials', { cache:'no-store' });
+        const d = await r.json();
+        if (typeof d.trials === 'number'){ trials = d.trials; updateTrialsUI(); }
+      }catch(_e){}
     }
 
     function showUploadImage(url){
@@ -322,16 +331,19 @@
       if (file.size > maxBytes) { alert('File too large. Maximum 8 MB allowed.'); return; }
       if (uploadedBlobUrl) URL.revokeObjectURL(uploadedBlobUrl);
       uploadedBlobUrl = URL.createObjectURL(file);
-      uploadedFile = file; // NEW (Step 7)
+      uploadedFile = file;
       showUploadImage(uploadedBlobUrl);
       clearResult();
       downloadBtn.disabled = true;
       setStatus('Image ready');
     }
 
-    // NEW Remove button handler (Step 7)
+    // Remove button handler
     removeBtn.addEventListener('click', async () => {
       if (!uploadedFile){ alert('Please upload an image first.'); return; }
+
+      // Ensure latest trials from server before proceeding
+      await fetchTrials();
       if (trials <= 0){ alert('No trials left. Please subscribe.'); return; }
 
       setStatus('Processing...');
@@ -342,13 +354,16 @@
         const fd = new FormData();
         fd.append('image', uploadedFile, uploadedFile.name);
 
-        // Local backend call
         const res = await fetch('https://magiccutbg-server.onrender.com/api/remove', {
           method: 'POST',
           body: fd
         });
 
-        if (!res.ok) throw new Error('Server error');
+        if (!res.ok) {
+          const err = await res.text().catch(()=> '');
+          throw new Error('Server error: ' + err);
+        }
+
         const blob = await res.blob();
 
         if (processedBlobUrl) URL.revokeObjectURL(processedBlobUrl);
@@ -357,8 +372,15 @@
         resultPreview.style.display = 'block';
         downloadBtn.disabled = false;
 
-        trials = Math.max(0, trials - 1);
-        updateTrialsUI();
+        // Update trials from response header or fallback fetch
+        const trialsLeftHeader = Number(res.headers.get('x-trials-left'));
+        if (!Number.isNaN(trialsLeftHeader)) {
+          trials = trialsLeftHeader;
+          updateTrialsUI();
+        } else {
+          await fetchTrials();
+        }
+
         setStatus('Done');
       } catch (e){
         console.error(e);
@@ -379,7 +401,9 @@
 
     subscribeBtn.addEventListener('click', ()=> { alert('Subscribe flow (demo).'); });
 
-    updateTrialsUI();
+    // Initial trials from server
+    fetchTrials();
+
     window.addEventListener('beforeunload', ()=>{ if (uploadedBlobUrl) URL.revokeObjectURL(uploadedBlobUrl); });
   </script>
 </body>
