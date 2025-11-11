@@ -72,9 +72,12 @@ app.post('/api/remove', upload.single('image'), async (req, res) => {
     // Decrement trials on success
     TRIALS_LEFT = Math.max(0, TRIALS_LEFT - 1);
 
+    // Headers (added Access-Control-Expose-Headers for X-Trials-Left)
     res.set('Content-Type', 'image/png');
     res.set('Cache-Control', 'no-store');
     res.set('X-Trials-Left', String(TRIALS_LEFT));
+    res.set('Access-Control-Expose-Headers', 'X-Trials-Left');
+
     res.send(Buffer.from(resp.data));
   } catch (e) {
     console.error('Clip error:', e.response?.data || e.message);
