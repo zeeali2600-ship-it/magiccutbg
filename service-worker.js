@@ -1,4 +1,4 @@
-const CACHE_NAME = 'magiccutbg-v2';
+const CACHE_NAME = 'magiccutbg-v3';
 const ASSETS = [
   './',
   './index.html',
@@ -21,11 +21,26 @@ self.addEventListener('activate', event => {
 });
 
 self.addEventListener('fetch', event => {
-  if (event.request.mode === 'navigate') {
-    event.respondWith(fetch(event.request).catch(() => caches.match('./index.html')));
+  const req = event.request;
+  const url = new URL(req.url);
+
+  // Only handle GET requests
+  if (req.method !== 'GET') return;
+
+  // Bypass cache for API requests
+  if (url.pathname.includes('/api/')) {
+    event.respondWith(fetch(req));
     return;
   }
+
+  // For navigations, go network-first, fallback to cached shell
+  if (req.mode === 'navigate') {
+    event.respondWith(fetch(req).catch(() => caches.match('./index.html')));
+    return;
+  }
+
+  // Static assets: cache-first
   event.respondWith(
-    caches.match(event.request).then(res => res || fetch(event.request))
+    caches.match(req).then(res => res || fetch(req))
   );
 });
