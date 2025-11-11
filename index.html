@@ -310,6 +310,11 @@
       }catch(_e){}
     }
 
+    // NEW: warm-up ping on load (avoid cold start lag)
+    async function warmup(){
+      try{ await fetch('https://magiccutbg-server.onrender.com/api/ping', { cache:'no-store', keepalive:true }); }catch(_e){}
+    }
+
     function showUploadImage(url){
       uploadContent.innerHTML = '';
       const img = document.createElement('img');
@@ -359,6 +364,14 @@
           body: fd
         });
 
+        // NEW: precise handling for server-enforced no-trials
+        if (res.status === 402){
+          await fetchTrials();
+          setStatus('Trials finished — please subscribe');
+          alert('No trials left. Please subscribe.');
+          return;
+        }
+
         if (!res.ok) {
           const err = await res.text().catch(()=> '');
           throw new Error('Server error: ' + err);
@@ -401,7 +414,8 @@
 
     subscribeBtn.addEventListener('click', ()=> { alert('Subscribe flow (demo).'); });
 
-    // Initial trials from server
+    // Initial load
+    warmup();      // NEW
     fetchTrials();
 
     window.addEventListener('beforeunload', ()=>{ if (uploadedBlobUrl) URL.revokeObjectURL(uploadedBlobUrl); });
