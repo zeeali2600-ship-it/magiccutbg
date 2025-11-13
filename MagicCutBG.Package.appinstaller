@@ -1,18 +1,18 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <AppInstaller
 	Uri="https://zeeali2600-ship-it.github.io/magiccutbg/MagicCutBG.Package.appinstaller"
-	Version="1.0.1.0" xmlns="http://schemas.microsoft.com/appx/appinstaller/2017/2">
+	Version="3.0.3.0" xmlns="http://schemas.microsoft.com/appx/appinstaller/2017/2">
 	<MainBundle
 		Name="ZeroBGMaster.MagicCutBG"
-		Version="1.0.1.0"
+		Version="3.0.3.0"
 		Publisher="CN=ZeroBG Master"
-		Uri="https://zeeali2600-ship-it.github.io/magiccutbg/MagicCutBG.Package_1.0.1.0_Test/MagicCutBG.Package_1.0.1.0_x64.msixbundle" />
+		Uri="https://zeeali2600-ship-it.github.io/magiccutbg/MagicCutBG.Package_3.0.3.0_Test/MagicCutBG.Package_3.0.3.0_x64.msixbundle" />
 	<Dependencies>
 		<Package
 			Name="Microsoft.VCLibs.140.00.UWPDesktop"
 			Publisher="CN=Microsoft Corporation, O=Microsoft Corporation, L=Redmond, S=Washington, C=US"
 			ProcessorArchitecture="x64"
-			Uri="https://zeeali2600-ship-it.github.io/magiccutbg/MagicCutBG.Package_1.0.1.0_Test/Dependencies/x64/Microsoft.VCLibs.x64.14.00.Desktop.appx"
+			Uri="https://zeeali2600-ship-it.github.io/magiccutbg/MagicCutBG.Package_3.0.3.0_Test/Dependencies/x64/Microsoft.VCLibs.x64.14.00.Desktop.appx"
 			Version="14.0.33728.0" />
 	</Dependencies>
 	<UpdateSettings>
