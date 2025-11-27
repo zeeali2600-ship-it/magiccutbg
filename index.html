@@ -256,6 +256,9 @@
     // GitHub Pages subpath fix: relative SW path (no leading slash)
     if ('serviceWorker' in navigator) navigator.serviceWorker.register('service-worker.js').catch(()=>{});
 
+    // NEW: single place to change API base
+    const API_BASE = 'https://magiccutbg-server.onrender.com';
+
     const fileInput = document.getElementById('fileInput');
     const dropArea = document.getElementById('dropArea');
     const uploadContent = document.getElementById('uploadContent');
@@ -304,7 +307,7 @@
     // Server se trials laane ka helper
     async function fetchTrials(){
       try{
-        const r = await fetch('https://magiccutbg-server.onrender.com/api/trials', { cache:'no-store' });
+        const r = await fetch(`${API_BASE}/api/trials`, { cache:'no-store', credentials:'include' });
         const d = await r.json();
         if (typeof d.trials === 'number'){ trials = d.trials; updateTrialsUI(); }
       }catch(_e){}
@@ -312,7 +315,7 @@
 
     // NEW: warm-up ping on load (avoid cold start lag)
     async function warmup(){
-      try{ await fetch('https://magiccutbg-server.onrender.com/api/ping', { cache:'no-store', keepalive:true }); }catch(_e){}
+      try{ await fetch(`${API_BASE}/api/ping`, { cache:'no-store', keepalive:true }); }catch(_e){}
     }
 
     function showUploadImage(url){
@@ -359,9 +362,10 @@
         const fd = new FormData();
         fd.append('image', uploadedFile, uploadedFile.name);
 
-        const res = await fetch('https://magiccutbg-server.onrender.com/api/remove', {
+        const res = await fetch(`${API_BASE}/api/remove`, {
           method: 'POST',
-          body: fd
+          body: fd,
+          credentials: 'include'
         });
 
         // Precise handling for server-enforced no-trials
