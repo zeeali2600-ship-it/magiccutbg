@@ -45,7 +45,7 @@ const DEFAULT_TRIALS = Number.parseInt(process.env.TRIALS_INIT || '3', 10) || 3;
 const COOKIE_NAME = 'uid';
 const COOKIE_OPTIONS = {
   httpOnly: true,
-  sameSite: 'Lax',
+  sameSite: 'None',
   secure: true, // GH Pages + Render both https
   maxAge: 365 * 24 * 60 * 60 * 1000
 };
