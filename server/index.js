@@ -21,6 +21,7 @@ const { v4: uuidv4 } = (() => {
 })();
 
 const app = express();
+app.set('trust proxy', 1); // behind Render/Proxies for correct client IP
 app.use(cookieParser());
 
 // CORS (same as before, but allow credentials if using cookies)
@@ -50,6 +51,34 @@ const COOKIE_OPTIONS = {
   maxAge: 365 * 24 * 60 * 60 * 1000
 };
 
+// ----- Per-IP lifetime cap (no login needed) -----
+const MAX_TOTAL_PER_IP = Number.parseInt(process.env.IP_TOTAL_TRIALS || '3', 10) || 3;
+
+function clientIp(req) {
+  const xf = req.headers['x-forwarded-for'];
+  const first = Array.isArray(xf) ? xf[0] : (xf || '');
+  return (first.split(',')[0] || '').trim() || req.ip;
+}
+
+async function ipPermInfo(req) {
+  if (!redis) return { key: null, left: Infinity, used: 0 };
+  const ip = clientIp(req);
+  const key = `ipperm:${ip}`;
+  const used = Number(await redis.get(key) || 0);
+  const left = Math.max(0, MAX_TOTAL_PER_IP - used);
+  return { key, left, used };
+}
+
+async function bumpIpUsage(key) {
+  if (!redis || !key) return;
+  const used = await redis.incr(key);
+  if (used === 1) {
+    // first time: set long TTL (~1 year)
+    await redis.expire(key, 365 * 24 * 60 * 60);
+  }
+}
+// -------------------------------------------------
+
 const upload = multer(); // memory
 
 // Helper: ensure per-user identity and trials (if Redis enabled)
@@ -75,12 +104,14 @@ async function ensureUserAndTrials(req, res) {
 // Health
 app.get('/api/ping', (req, res) => res.json({ ok: true }));
 
-// Report remaining trials
+// Report remaining trials (min of user cookie trials and IP lifetime cap)
 app.get('/api/trials', async (req, res) => {
   try {
     const info = await ensureUserAndTrials(req, res);
+    const ipInfo = await ipPermInfo(req);
+    const left = Math.min(info.trials, ipInfo.left);
     res.set('Cache-Control', 'no-store');
-    res.json({ trials: info.trials });
+    res.json({ trials: left });
   } catch (e) {
     res.status(500).json({ error: 'Trials fetch failed' });
   }
@@ -91,7 +122,13 @@ app.post('/api/remove', upload.single('image'), async (req, res) => {
   try {
     const info = await ensureUserAndTrials(req, res);
 
-    // Enforce trials
+    // IP lifetime cap
+    const ipInfo = await ipPermInfo(req);
+    if (ipInfo.left <= 0) {
+      return res.status(429).json({ error: 'Free limit reached for this IP' });
+    }
+
+    // Per-user trials cap (cookie/Redis)
     if (info.trials <= 0) {
       return res.status(402).json({ error: 'No trials left' });
     }
@@ -132,7 +169,7 @@ app.post('/api/remove', upload.single('image'), async (req, res) => {
       });
     }
 
-    // Decrement trials on success
+    // Decrement trials on success (user) and bump IP usage
     let left = info.trials;
     if (info.mode === 'per-user') {
       // Redis per-user atomic decrement
@@ -147,16 +184,35 @@ app.post('/api/remove', upload.single('image'), async (req, res) => {
       left = TRIALS_LEFT;
     }
 
+    // Increase IP usage and compute after value
+    await bumpIpUsage(ipInfo.key);
+    const ipLeftAfter = Math.max(0, ipInfo.left - 1);
+
     // Headers (added Access-Control-Expose-Headers for X-Trials-Left)
+    const combinedLeft = Math.min(left, ipLeftAfter);
     res.set('Content-Type', 'image/png');
     res.set('Cache-Control', 'no-store');
-    res.set('X-Trials-Left', String(left));
+    res.set('X-Trials-Left', String(combinedLeft));
     res.set('Access-Control-Expose-Headers', 'X-Trials-Left');
 
     res.send(Buffer.from(resp.data));
   } catch (e) {
     console.error('Clip error:', e.response?.data || e.message);
     res.status(500).json({ error: 'Processing failed', details: e.response?.data || e.message });
+  }
+});
+
+// Optional: admin reset for testing current IP (protected by token)
+app.post('/api/admin/reset-ip', async (req, res) => {
+  try {
+    const token = req.headers['x-admin-reset-token'];
+    const expected = process.env.ADMIN_RESET_TOKEN;
+    if (!expected || token !== expected) return res.status(401).json({ ok: false });
+    const ip = clientIp(req);
+    if (redis) await redis.del(`ipperm:${ip}`);
+    return res.json({ ok: true, ip });
+  } catch (e) {
+    return res.status(500).json({ ok: false });
   }
 });
 
